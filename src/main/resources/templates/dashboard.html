@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Prasun.dev - Blog Dashboard</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        .gradient-text {
+            background: linear-gradient(to right, #10b981, #3b82f6);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .glass {
+            background-color: rgba(30, 41, 59, 0.6);
+            backdrop-filter: blur(10px);
+        }
+
+        .btn-gradient {
+            background: linear-gradient(to right, #3b82f6, #10b981);
+        }
+
+        .btn-gradient:hover {
+            filter: brightness(1.1);
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+    </style>
+</head>
+<body class="bg-gray-900 text-gray-100 min-h-screen">
+
+<!-- NAVBAR -->
+<header class="fixed top-0 left-0 w-full z-50 glass border-b border-gray-700">
+    <div class="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
+        <h1 class="text-2xl font-bold gradient-text tracking-tight">Prasun.dev</h1>
+        <nav class="hidden md:flex space-x-6 text-sm">
+            <a th:href="@{/}" class="hover:text-white text-gray-400">Home</a>
+            <a th:href="@{/blogs}" class="hover:text-white text-gray-400">Blogs</a>
+            <a th:href="@{/}" class="hover:text-white text-gray-400">Projects</a>
+            <a th:href="@{/}" class="hover:text-white text-gray-400">Contact</a>
+        </nav>
+        <button class="md:hidden" id="menu-button">
+            <svg class="w-6 h-6 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
+            </svg>
+        </button>
+    </div>
+</header>
+
+<!-- MAIN CONTENT -->
+<main class="max-w-5xl mx-auto pt-28 px-4 space-y-16">
+
+    <!-- BLOG LIST -->
+    <section>
+        <h2 class="text-3xl font-extrabold border-b border-gray-700 pb-3 mb-6">📚 Your Blogs</h2>
+        <div class="grid gap-8">
+            <div th:each="blog : ${allBlogs}" class="bg-gray-800 rounded-xl shadow-lg p-6 transition hover:shadow-2xl">
+                <h3 th:text="${blog.title}" class="text-xl font-semibold text-white mb-1"></h3>
+                <p th:text="${blog.description}" class="text-gray-400 mb-4"></p>
+                <form th:action="@{'/delete/' + ${blog.id}}" method="post" onsubmit="return confirm('Delete this blog?');">
+                    <input type="hidden" name="_method" value="delete"/>
+                    <button type="submit" class="text-red-400 hover:text-red-500 text-sm font-medium">Delete</button>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <!-- ADD BLOG -->
+    <section class="bg-gray-800 p-8 rounded-xl shadow-xl glass">
+        <h2 class="text-2xl font-bold mb-6 border-b border-gray-700 pb-3">✍️ Add New Blog</h2>
+        <form th:action="@{/add-blog}" method="post" class="space-y-6">
+            <div>
+                <label for="title" class="block text-sm font-medium mb-1">Title</label>
+                <input type="text" id="title" name="title" required
+                       class="w-full p-3 rounded bg-gray-900 border border-gray-700 placeholder-gray-500 focus:ring focus:ring-blue-500"
+                       placeholder="Enter blog title"/>
+            </div>
+            <div>
+                <label for="description" class="block text-sm font-medium mb-1">Short Description</label>
+                <input type="text" id="description" name="description" required
+                       class="w-full p-3 rounded bg-gray-900 border border-gray-700 placeholder-gray-500 focus:ring focus:ring-blue-500"
+                       placeholder="Enter a short summary"/>
+            </div>
+            <div>
+                <label for="content" class="block text-sm font-medium mb-1">Content</label>
+                <textarea id="content" name="content" rows="5" required
+                          class="w-full p-3 rounded bg-gray-900 border border-gray-700 placeholder-gray-500 focus:ring focus:ring-blue-500 resize-y"
+                          placeholder="Write the full blog here..."></textarea>
+            </div>
+            <div>
+                <label for="author" class="block text-sm font-medium mb-1">Author</label>
+                <input type="text" id="author" name="author" required
+                       class="w-full p-3 rounded bg-gray-900 border border-gray-700 placeholder-gray-500 focus:ring focus:ring-blue-500"
+                       placeholder="Your name"/>
+            </div>
+            <button type="submit"
+                    class="btn-gradient w-full text-white font-semibold py-3 px-6 rounded-md transition">
+                🚀 Publish Blog
+            </button>
+        </form>
+    </section>
+</main>
+
+<!-- FOOTER -->
+<footer class="mt-20 py-10 bg-slate-900 border-t border-slate-700">
+    <div class="max-w-4xl mx-auto text-center">
+        <div class="text-xl font-bold gradient-text">Prasun.dev</div>
+        <p class="text-gray-500 mt-2">Code | Grit | Discipline</p>
+        <div class="mt-6 flex justify-center space-x-6 text-sm text-gray-400">
+            <a th:href="@{/}" class="hover:text-white">Home</a>
+            <a th:href="@{/blogs}" class="hover:text-white">Blogs</a>
+            <a th:href="@{/}" class="hover:text-white">Projects</a>
+            <a th:href="@{/}" class="hover:text-white">Contact</a>
+        </div>
+        <p class="text-gray-600 mt-6">&copy; <span id="year"></span> Prasun. All rights reserved.</p>
+    </div>
+</footer>
+
+<script>
+    document.getElementById("year").textContent = new Date().getFullYear();
+
+    document.getElementById("menu-button").addEventListener("click", () => {
+        // implement mobile nav toggle if needed
+    });
+</script>
+
+</body>
+</html>
