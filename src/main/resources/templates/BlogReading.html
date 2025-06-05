@@ -3,8 +3,103 @@
 <head>
     <meta charset="UTF-8" />
     <title th:text="${post.title}">Notes Post</title>
+
+    <!-- Meta Tags for SEO -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta th:if="${post.description}" th:attr="content=${post.description}" name="description" content="Read in-depth technical and personal development blog posts by Prasun.">
+    <meta th:if="${post.title}" th:attr="content=${post.title}" name="keywords" content="Java, Spring Boot, Programming, Self-Improvement, Notes, Blog, Prasun.dev">
+
+    <!-- Open Graph for Social Sharing -->
+    <meta property="og:title" th:content="${post.title}" />
+    <meta property="og:description" th:content="${post.description}" />
+    <meta property="og:type" content="article" />
+    <meta property="og:site_name" content="Prasun.dev" />
+    <meta property="og:image" content="/images/preview.png" />
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" th:content="${post.title}" />
+    <meta name="twitter:description" th:content="${post.description}" />
+    <meta name="twitter:image" content="/images/preview.png" />
+
+    <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
+
+    <style>
+        /* Glass Effect Background */
+        .glass-effect {
+            background: rgba(30, 41, 59, 0.7); /* Tailwind slate-800 with opacity */
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border-radius: 0.5rem; /* rounded-lg */
+        }
+
+        /* Gradient Text */
+        .gradient-text {
+            background: linear-gradient(90deg, #10b981, #22d3ee);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        /* Smooth Transitions */
+        .nav-link {
+            transition: color 0.3s ease;
+        }
+
+        /* Animate fadeIn for IntersectionObserver */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .animate-fadeIn {
+            animation: fadeIn 0.8s ease forwards;
+        }
+
+        /* Scroll to top button styles (assuming you want one) */
+        #back-to-top {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            background-color: #10b981; /* emerald-500 */
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 9999px;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s ease, visibility 0.3s ease;
+            cursor: pointer;
+            box-shadow: 0 4px 6px rgba(16, 185, 129, 0.5);
+            z-index: 50;
+        }
+
+        /* Hover for buttons */
+        button:hover {
+            filter: brightness(1.1);
+            transition: filter 0.2s ease;
+        }
+
+        /* Prose Invert overrides for blog content */
+        .prose-invert a {
+            color: #22d3ee; /* lighter blue */
+            text-decoration: underline;
+            transition: color 0.3s ease;
+        }
+        .prose-invert a:hover {
+            color: #10b981; /* emerald */
+        }
+
+        /* Responsive tweaks */
+        @media (max-width: 768px) {
+            /* Mobile nav link padding */
+            #mobile-menu a {
+                padding-left: 0;
+                padding-right: 0;
+            }
+        }
+
+    </style>
 </head>
+
 <body class="bg-gray-900 text-gray-100 font-sans">
 
 <header class="fixed top-0 w-full z-50 glass-effect border-b border-slate-800/50">
