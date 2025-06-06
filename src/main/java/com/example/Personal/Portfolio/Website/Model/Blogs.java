@@ -15,6 +15,8 @@ public class Blogs {
     @Lob
     @Column(columnDefinition = "TEXT")
     private String content;
+    private String imageURL;
+
     // NEW FIELD
 
 
@@ -22,12 +24,21 @@ public class Blogs {
 
     }
 
-    public Blogs(int id, String title, String author, String content, String description) {
+    public Blogs(int id, String imageURL, String title, String author, String content, String description) {
         this.id = id;
+        this.imageURL = imageURL;
         this.title = title;
         this.author = author;
         this.content = content;
         this.description = description;
+    }
+
+    public String getImageURL() {
+        return imageURL;
+    }
+
+    public void setImageURL(String imageURL) {
+        this.imageURL = imageURL;
     }
 
     public int getId() {

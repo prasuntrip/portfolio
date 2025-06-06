@@ -46,6 +46,7 @@ public class adminController {
             @RequestParam String description,
             @RequestParam String content,
             @RequestParam String author,
+            @RequestParam String imageUrl,
             Model model) {
 
         Blogs blog = new Blogs();
@@ -53,6 +54,7 @@ public class adminController {
         blog.setDescription(description);
         blog.setContent(content);
         blog.setAuthor(author);
+        blog.setImageURL(imageUrl);
 
         services.save(blog);
 
