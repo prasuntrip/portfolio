@@ -6,14 +6,25 @@
     <title th:text="${pageTitle} ?: 'Prasun | Full-Stack Developer & Boxer'">Prasun | Full-Stack Developer & Boxer</title>
     <script th:src="@{https://cdn.tailwindcss.com}"></script>
     <meta name="description" content="Prasun's personal portfolio — full-stack developer, Android enthusiast, and disciplined boxer from Nepal." />
-    <meta name="keywords" content="Prasun, developer, Java, Spring Boot, Android, portfolio, Nepal, full-stack, coder, boxer" />
-    <meta name="author" content="Prasun" />
+    <meta name="keywords" content="Prasun Tripathi, Prasun, codewithprasun, code with prasun, prasun developer, Prasun Java, Prasun Spring Boot, Android, Prasun Tripathi portfolio, Nepal, full-stack, coder, boxer" />
+    <meta name="author" content="Prasun Tripathi" />
     <meta name="robots" content="index, follow" />
     <meta name="theme-color" content="#10b981" />
     <meta name="apple-mobile-web-app-capable" content="yes" />
     <meta name="google-site-verification" content="XBa-P8xScDePUpU7lWGSJS-zev6v-dgi562Y2jON1Ys" />
 
+    <!-- Google Fonts - Inter -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+
     <style>
+        /* Base styles for Inter font */
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+
+        /* Keyframe Animations */
         @keyframes float {
             0%, 100% { transform: translateY(0); }
             50% { transform: translateY(-15px); }
@@ -27,10 +38,29 @@
             50% { transform: scale(1.05); }
         }
         @keyframes gradientFlow {
-            0% { background-position: 0 50%; }
+            0% { background-position: 0% 50%; }
             50% { background-position: 100% 50%; }
-            100% { background-position: 0 50%; }
+            100% { background-position: 0% 50%; }
         }
+        @keyframes rotateGlow {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        @keyframes slideInLeft {
+            0% { opacity: 0; transform: translateX(-50px); }
+            100% { opacity: 1; transform: translateX(0); }
+        }
+        @keyframes slideInRight {
+            0% { opacity: 0; transform: translateX(50px); }
+            100% { opacity: 1; transform: translateX(0); }
+        }
+        @keyframes bounceScroll {
+            0%, 20%, 50%, 80%, 100% { transform: translateY(0); }
+            40% { transform: translateY(-10px); }
+            60% { transform: translateY(-5px); }
+        }
+
+        /* Custom Animation Classes */
         .animate-float {
             animation: float 6s ease-in-out infinite;
         }
@@ -44,12 +74,12 @@
             background-clip: text;
             -webkit-background-clip: text;
             color: transparent;
-            background-image: linear-gradient(90deg, #10b981, #3b82f6);
+            background-image: linear-gradient(90deg, #10b981, #3b82f6); /* Emerald to Blue */
             background-size: 200% 200%;
             animation: gradientFlow 8s ease infinite;
         }
         .gradient-bg {
-            background: linear-gradient(-45deg, #1e293b, #0f172a, #1e293b);
+            background: linear-gradient(-45deg, #1e293b, #0f172a, #1e293b); /* Slate-800, Slate-900 */
             background-size: 400% 400%;
             animation: gradientFlow 12s ease infinite;
         }
@@ -57,11 +87,11 @@
             transition: width 1.5s cubic-bezier(0.65, 0, 0.35, 1);
         }
         .glow-box {
-            box-shadow: 0 0 15px rgba(16, 185, 129, 0.3);
+            box-shadow: 0 0 15px rgba(16, 185, 129, 0.3); /* Emerald-500 */
             transition: all 0.3s ease;
         }
         .glow-box:hover {
-            box-shadow: 0 0 25px rgba(16, 185, 129, 0.5);
+            box-shadow: 0 0 25px rgba(16, 185, 129, 0.5); /* Emerald-500 */
             transform: translateY(-3px);
         }
         .nav-link {
@@ -74,7 +104,7 @@
             height: 2px;
             bottom: -2px;
             left: 0;
-            background: linear-gradient(90deg, #10b981, #3b82f6);
+            background: linear-gradient(90deg, #10b981, #3b82f6); /* Emerald to Blue */
             transition: width 0.4s cubic-bezier(0.65, 0, 0.35, 1);
         }
         .nav-link:hover::after {
@@ -84,26 +114,53 @@
             transition: all 0.4s cubic-bezier(0.65, 0, 0.35, 1);
         }
         .card-hover:hover {
-            transform: translateY(-8px);
+            transform: translateY(-8px) scale(1.02); /* Slight scale on hover */
         }
-        /*.parallax-bg {*/
-        /*    background-attachment: fixed;*/
-        /*    background-position: center;*/
-        /*    background-repeat: no-repeat;*/
-        /*    background-size: cover;*/
-        /*}*/
         .glass-effect {
-            background: rgba(15, 23, 42, 0.7);
+            background: rgba(15, 23, 42, 0.7); /* Slate-900 with opacity */
             backdrop-filter: blur(10px);
             -webkit-backdrop-filter: blur(10px);
             border: 1px solid rgba(255, 255, 255, 0.1);
         }
-        /*.text-stroke {*/
-        /*    -webkit-text-stroke: 1px #10b981;*/
-        /*    color: transparent;*/
-        /*}*/
         .hexagon {
             clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
+        }
+        .rotate-glow-border {
+            position: absolute;
+            top: -5px;
+            left: -5px;
+            right: -5px;
+            bottom: -5px;
+            background: conic-gradient(from 0deg, #10b981, #3b82f6, #10b981);
+            animation: rotateGlow 4s linear infinite;
+            z-index: -1;
+            filter: blur(8px);
+            border-radius: 9999px; /* For circular glow */
+        }
+        .hexagon .rotate-glow-border {
+            /* Adjust for hexagon shape if needed, otherwise use outer container for blur */
+            clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
+            border-radius: 0; /* Override for hexagon */
+        }
+        .image-overlay-glow {
+            box-shadow: 0 0 30px rgba(16, 185, 129, 0.6); /* Stronger glow for image */
+            transition: all 0.5s ease;
+        }
+        .image-overlay-glow:hover {
+            box-shadow: 0 0 50px rgba(16, 185, 129, 0.8);
+        }
+        .back-to-top-button {
+            animation: bounceScroll 2s infinite;
+        }
+
+        /* Apply slide-in animations to sections on load */
+        .section-animate-left {
+            opacity: 0;
+            animation: slideInLeft 1s ease forwards;
+        }
+        .section-animate-right {
+            opacity: 0;
+            animation: slideInRight 1s ease forwards;
         }
     </style>
 </head>
@@ -127,15 +184,15 @@
         </nav>
 
         <!-- Mobile Button -->
-        <button id="menu-toggle" class="md:hidden focus:outline-none">
-            <svg id="hamburger-icon" class="w-6 h-6 text-emerald-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <button id="menu-toggle" class="md:hidden focus:outline-none relative" aria-label="Toggle navigation menu" aria-expanded="false" aria-controls="mobile-menu">
+            <svg id="hamburger-icon" class="w-7 h-7 text-emerald-500 transition-all duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
             </svg>
         </button>
     </div>
 
     <!-- Mobile Menu -->
-    <div id="mobile-menu" class="hidden md:hidden absolute top-full left-0 right-0 glass-effect py-4 px-6 rounded-b-lg shadow-xl">
+    <div id="mobile-menu" class="hidden md:hidden absolute top-full left-0 right-0 glass-effect py-4 px-6 rounded-b-lg shadow-xl origin-top transition-all duration-300 ease-in-out scale-y-0 opacity-0">
         <div class="flex flex-col space-y-4">
             <a href="#home" class="text-slate-300 hover:text-white transition duration-300 py-2 border-b border-slate-800/50">Home</a>
             <a href="#about" class="text-slate-300 hover:text-white transition duration-300 py-2 border-b border-slate-800/50">About</a>
@@ -143,19 +200,24 @@
             <a href="#projects" class="text-slate-300 hover:text-white transition duration-300 py-2 border-b border-slate-800/50">Projects</a>
             <a href="#contact" class="text-slate-300 hover:text-white transition duration-300 py-2">Contact</a>
             <a th:href="@{/admin}" class="text-slate-300 hover:text-white transition duration-300 py-2">Admin</a>
-
         </div>
     </div>
 </header>
 
 <!-- Hero Section -->
-<section id="home" class="min-h-screen pt-24 pb-16 flex items-center gradient-bg">
-    <div class="max-w-7xl mx-auto px-6 md:px-16 flex flex-col md:flex-row items-center justify-between">
-        <div class="md:w-1/2 mb-12 md:mb-0 animate-fadeIn">
+<section id="home" class="min-h-screen pt-24 pb-16 flex items-center gradient-bg relative overflow-hidden">
+    <!-- Subtle background particles/blobs (optional, can be complex with pure CSS/JS) -->
+    <div class="absolute inset-0 z-0 opacity-5">
+        <div class="w-64 h-64 bg-emerald-500 rounded-full mix-blend-multiply filter blur-xl absolute top-1/4 left-1/4 animate-pulse"></div>
+        <div class="w-80 h-80 bg-blue-500 rounded-full mix-blend-multiply filter blur-xl absolute bottom-1/3 right-1/4 animate-pulse animation-delay-1000"></div>
+    </div>
+
+    <div class="max-w-7xl mx-auto px-6 md:px-16 flex flex-col md:flex-row items-center justify-between relative z-10">
+        <div class="md:w-1/2 mb-12 md:mb-0 animate-fadeIn section-animate-left" style="animation-delay: 0.2s;">
             <div class="mb-6">
-                <span class="px-4 py-2 bg-emerald-500/20 text-emerald-400 rounded-full text-sm font-medium">Full-Stack Developer</span>
+                <span class="px-4 py-2 bg-emerald-500/20 text-emerald-400 rounded-full text-sm font-medium border border-emerald-400/30">Full-Stack Developer</span>
             </div>
-            <h1 class="text-4xl md:text-6xl font-bold leading-tight mb-6">
+            <h1 class="text-4xl md:text-6xl font-extrabold leading-tight mb-6">
                 <span class="text-white">Hi, I'm </span>
                 <span class="gradient-text">Prasun</span>
             </h1>
@@ -163,11 +225,11 @@
                 Student, coder, and boxer — mastering Java, full-stack development, and building unstoppable physical power.
             </p>
             <div class="flex flex-wrap gap-3 mb-8">
-                <span class="px-3 py-1 bg-slate-800/50 rounded-full text-sm text-emerald-400 border border-slate-700">Java</span>
-                <span class="px-3 py-1 bg-slate-800/50 rounded-full text-sm text-emerald-400 border border-slate-700">Spring Boot</span>
-                <span class="px-3 py-1 bg-slate-800/50 rounded-full text-sm text-emerald-400 border border-slate-700">Android</span>
-                <span class="px-3 py-1 bg-slate-800/50 rounded-full text-sm text-emerald-400 border border-slate-700">MySQL</span>
-                <span class="px-3 py-1 bg-slate-800/50 rounded-full text-sm text-emerald-400 border border-slate-700">Tailwind</span>
+                <span class="px-3 py-1 bg-slate-800/60 rounded-full text-sm text-emerald-400 border border-slate-700 hover:bg-slate-700 transition duration-300">Java</span>
+                <span class="px-3 py-1 bg-slate-800/60 rounded-full text-sm text-emerald-400 border border-slate-700 hover:bg-slate-700 transition duration-300">Spring Boot</span>
+                <span class="px-3 py-1 bg-slate-800/60 rounded-full text-sm text-emerald-400 border border-slate-700 hover:bg-slate-700 transition duration-300">Android</span>
+                <span class="px-3 py-1 bg-slate-800/60 rounded-full text-sm text-emerald-400 border border-slate-700 hover:bg-slate-700 transition duration-300">MySQL</span>
+                <span class="px-3 py-1 bg-slate-800/60 rounded-full text-sm text-emerald-400 border border-slate-700 hover:bg-slate-700 transition duration-300">Tailwind</span>
             </div>
             <div class="flex flex-wrap gap-4">
                 <a href="#contact" class="px-8 py-3 bg-gradient-to-r from-emerald-500 to-blue-500 hover:from-emerald-600 hover:to-blue-600 text-white font-bold rounded-full transition duration-300 transform hover:scale-105 glow-box flex items-center">
@@ -184,21 +246,20 @@
                 </a>
             </div>
         </div>
-        <div class="md:w-1/2 flex justify-center animate-float">
+        <div class="md:w-1/2 flex justify-center animate-float section-animate-right" style="animation-delay: 0.4s;">
             <div class="relative w-64 h-64 md:w-80 md:h-80 lg:w-96 lg:h-96">
-                <div class="absolute inset-0 rounded-full bg-gradient-to-br from-emerald-500 to-blue-500 blur-xl opacity-20 animate-pulse"></div>
-                <div class="absolute inset-0 rounded-full bg-gradient-to-br from-emerald-500 to-blue-500 blur-xl opacity-10 animate-pulse delay-1000"></div>
-                <div class="relative z-10 w-full h-full">
-                    <div class="hexagon w-full h-full bg-slate-800 overflow-hidden border-2 border-emerald-500/30">
-                        <div class="w-full h-full bg-[url('/images/2ba48145-03d5-4bbd-b451-ded4edb94312.jpg')] bg-cover bg-center"></div>
-                    </div>
+                <!-- Glowing border effect -->
+                <div class="rotate-glow-border rounded-full"></div>
+                <div class="relative z-10 w-full h-full hexagon bg-slate-800 overflow-hidden border-2 border-emerald-500/30 image-overlay-glow">
+                    <!-- Placeholder image - Replace with Prasun's actual image path -->
+                    <img src="https://placehold.co/720x720/0f172a/10b981?text=Prasun" alt="Prasun Tripathi - Developer & Boxer" class="w-full h-full object-cover object-center opacity-90">
                 </div>
             </div>
         </div>
     </div>
 
     <!-- Scroll indicator -->
-    <div class="absolute bottom-8 left-1/2 transform -translate-x-1/2 animate-bounce">
+    <div class="absolute bottom-8 left-1/2 transform -translate-x-1/2 back-to-top-button">
         <a href="#about" class="block w-10 h-16 rounded-full border-2 border-emerald-500/50 flex items-center justify-center">
             <span class="w-3 h-3 bg-emerald-500 rounded-full mt-2"></span>
         </a>
@@ -206,7 +267,7 @@
 </section>
 
 <!-- About Section -->
-<section id="about" class="py-20 glass-effect">
+<section id="about" class="py-20 glass-effect section-animate-fadeIn">
     <div class="max-w-4xl mx-auto px-6">
         <div class="text-center mb-16">
             <h2 class="text-3xl md:text-4xl font-bold mb-4">
@@ -219,7 +280,7 @@
         </div>
 
         <div class="grid md:grid-cols-2 gap-12 items-center">
-            <div class="order-2 md:order-1">
+            <div class="order-2 md:order-1 section-animate-left" style="animation-delay: 0.2s;">
                 <h3 class="text-2xl font-bold text-white mb-6">Who Am I?</h3>
                 <p class="text-slate-300 mb-6">
                     I'm <span class="text-emerald-400 font-medium">Prasun</span>, a 17-year-old student from <span class="text-emerald-400 font-medium">Nepal</span> currently sharpening my skills at <span class="text-emerald-400 font-medium">St. Xavier's College, Kathmandu</span>. My mission is to master coding, build ironclad physical strength, and forge a mindset that can't be broken.
@@ -229,10 +290,11 @@
                 </p>
 
                 <div class="grid grid-cols-2 gap-4 mb-8">
-                    <div class="flex items-center space-x-3 bg-slate-800/50 p-3 rounded-lg border border-slate-700/50">
+                    <div class="flex items-center space-x-3 glass-effect p-3 rounded-lg border border-slate-700/50 card-hover">
                         <div class="w-8 h-8 rounded-full bg-emerald-500/20 flex items-center justify-center">
                             <svg class="w-4 h-4 text-emerald-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
                             </svg>
                         </div>
                         <div>
@@ -240,10 +302,10 @@
                             <p class="text-slate-300">Nepal</p>
                         </div>
                     </div>
-                    <div class="flex items-center space-x-3 bg-slate-800/50 p-3 rounded-lg border border-slate-700/50">
+                    <div class="flex items-center space-x-3 glass-effect p-3 rounded-lg border border-slate-700/50 card-hover">
                         <div class="w-8 h-8 rounded-full bg-emerald-500/20 flex items-center justify-center">
                             <svg class="w-4 h-4 text-emerald-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
                             </svg>
                         </div>
                         <div>
@@ -251,10 +313,10 @@
                             <p class="text-slate-300">17 Years</p>
                         </div>
                     </div>
-                    <div class="flex items-center space-x-3 bg-slate-800/50 p-3 rounded-lg border border-slate-700/50">
+                    <div class="flex items-center space-x-3 glass-effect p-3 rounded-lg border border-slate-700/50 card-hover">
                         <div class="w-8 h-8 rounded-full bg-emerald-500/20 flex items-center justify-center">
                             <svg class="w-4 h-4 text-emerald-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.246 18 16.5 18c-1.747 0-3.332.477-4.5 1.253" />
                             </svg>
                         </div>
                         <div>
@@ -262,10 +324,10 @@
                             <p class="text-slate-300">St. Xavier's</p>
                         </div>
                     </div>
-                    <div class="flex items-center space-x-3 bg-slate-800/50 p-3 rounded-lg border border-slate-700/50">
+                    <div class="flex items-center space-x-3 glass-effect p-3 rounded-lg border border-slate-700/50 card-hover">
                         <div class="w-8 h-8 rounded-full bg-emerald-500/20 flex items-center justify-center">
                             <svg class="w-4 h-4 text-emerald-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h2a2 2 0 002-2V8a2 2 0 00-2-2h-2M3 20h2a2 2 0 002-2V8a2 2 0 01-2-2H3a2 2 0 00-2 2v10a2 2 0 002 2zM7 4h10a2 2 0 012 2v10a2 2 0 01-2 2H7a2 2 0 01-2-2V6a2 2 0 012-2z" />
                             </svg>
                         </div>
                         <div>
@@ -283,7 +345,7 @@
                 </a>
             </div>
 
-            <div class="order-1 md:order-2 flex justify-center">
+            <div class="order-1 md:order-2 flex justify-center section-animate-right" style="animation-delay: 0.4s;">
                 <div class="relative w-64 h-64 md:w-72 md:h-72">
                     <div class="absolute inset-0 bg-gradient-to-br from-emerald-500 to-blue-500 rounded-lg transform rotate-6 animate-pulse opacity-70"></div>
                     <div class="relative z-10 w-full h-full bg-slate-800 rounded-lg overflow-hidden border border-slate-700 card-hover">
@@ -292,7 +354,8 @@
                             <h4 class="text-white font-bold text-xl">Prasun</h4>
                             <p class="text-emerald-400">Developer & Boxer</p>
                         </div>
-                        <div class="w-full h-full bg-[url('/images/2ba48145-03d5-4bbd-b451-ded4edb94312.jpg')] bg-cover bg-center opacity-90"></div>
+                        <!-- Placeholder image - Replace with Prasun's actual image path -->
+                        <img src="https://placehold.co/720x720/0f172a/10b981?text=Prasun" alt="Prasun Tripathi - Developer & Boxer" class="w-full h-full object-cover object-center opacity-90">
                     </div>
                 </div>
             </div>
@@ -301,7 +364,7 @@
 </section>
 
 <!-- Skills Section -->
-<section id="skills" class="py-20 gradient-bg">
+<section id="skills" class="py-20 gradient-bg section-animate-fadeIn">
     <div class="max-w-4xl mx-auto px-6">
         <div class="text-center mb-16">
             <h2 class="text-3xl md:text-4xl font-bold mb-4">
@@ -315,8 +378,8 @@
 
         <div class="grid md:grid-cols-2 gap-8">
             <!-- Left Column -->
-            <div class="space-y-6">
-                <div class="glass-effect p-6 rounded-xl border border-slate-700/50">
+            <div class="space-y-6 section-animate-left" style="animation-delay: 0.2s;">
+                <div class="glass-effect p-6 rounded-xl border border-slate-700/50 hover:border-emerald-500/50 transition duration-300">
                     <div class="flex justify-between mb-2">
                         <span class="text-slate-300 font-medium">Java</span>
                         <span class="text-emerald-500">80%</span>
@@ -326,7 +389,7 @@
                     </div>
                 </div>
 
-                <div class="glass-effect p-6 rounded-xl border border-slate-700/50">
+                <div class="glass-effect p-6 rounded-xl border border-slate-700/50 hover:border-emerald-500/50 transition duration-300">
                     <div class="flex justify-between mb-2">
                         <span class="text-slate-300 font-medium">Spring Boot</span>
                         <span class="text-emerald-500">70%</span>
@@ -336,7 +399,7 @@
                     </div>
                 </div>
 
-                <div class="glass-effect p-6 rounded-xl border border-slate-700/50">
+                <div class="glass-effect p-6 rounded-xl border border-slate-700/50 hover:border-emerald-500/50 transition duration-300">
                     <div class="flex justify-between mb-2">
                         <span class="text-slate-300 font-medium">Android</span>
                         <span class="text-emerald-500">60%</span>
@@ -348,8 +411,8 @@
             </div>
 
             <!-- Right Column -->
-            <div class="space-y-6">
-                <div class="glass-effect p-6 rounded-xl border border-slate-700/50">
+            <div class="space-y-6 section-animate-right" style="animation-delay: 0.4s;">
+                <div class="glass-effect p-6 rounded-xl border border-slate-700/50 hover:border-emerald-500/50 transition duration-300">
                     <div class="flex justify-between mb-2">
                         <span class="text-slate-300 font-medium">MySQL</span>
                         <span class="text-emerald-500">75%</span>
@@ -359,7 +422,7 @@
                     </div>
                 </div>
 
-                <div class="glass-effect p-6 rounded-xl border border-slate-700/50">
+                <div class="glass-effect p-6 rounded-xl border border-slate-700/50 hover:border-emerald-500/50 transition duration-300">
                     <div class="flex justify-between mb-2">
                         <span class="text-slate-300 font-medium">HTML/CSS</span>
                         <span class="text-emerald-500">85%</span>
@@ -369,7 +432,7 @@
                     </div>
                 </div>
 
-                <div class="glass-effect p-6 rounded-xl border border-slate-700/50">
+                <div class="glass-effect p-6 rounded-xl border border-slate-700/50 hover:border-emerald-500/50 transition duration-300">
                     <div class="flex justify-between mb-2">
                         <span class="text-slate-300 font-medium">Tailwind CSS</span>
                         <span class="text-emerald-500">80%</span>
@@ -381,7 +444,7 @@
             </div>
         </div>
 
-        <div class="mt-12 grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
+        <div class="mt-12 grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4 section-animate-fadeIn" style="animation-delay: 0.6s;">
             <div class="glass-effect hover:bg-slate-800/70 rounded-lg p-4 flex flex-col items-center transition duration-300 card-hover border border-slate-700/50">
                 <div class="w-12 h-12 mb-3 flex items-center justify-center bg-emerald-500/10 rounded-lg">
                     <svg class="w-6 h-6 text-emerald-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -422,7 +485,7 @@
 </section>
 
 <!-- Projects Section -->
-<section id="projects" class="py-20 glass-effect">
+<section id="projects" class="py-20 glass-effect section-animate-fadeIn">
     <div class="max-w-4xl mx-auto px-6">
         <div class="text-center mb-16">
             <h2 class="text-3xl md:text-4xl font-bold mb-4">
@@ -436,15 +499,12 @@
 
         <div class="grid gap-8">
             <!-- Project 1 -->
-            <div class="bg-gradient-to-br from-slate-800 to-slate-900 rounded-xl overflow-hidden border border-slate-700 hover:border-emerald-500/30 transition duration-300 card-hover glow-box">
+            <div class="bg-gradient-to-br from-slate-800 to-slate-900 rounded-xl overflow-hidden border border-slate-700 hover:border-emerald-500/30 transition duration-300 card-hover glow-box section-animate-left" style="animation-delay: 0.2s;">
                 <div class="md:flex">
                     <div class="md:w-1/3 bg-slate-700 flex items-center justify-center p-6">
                         <div class="w-full h-48 bg-slate-600 rounded-lg flex items-center justify-center overflow-hidden">
-                            <div class="w-full h-full bg-gradient-to-br from-emerald-500/20 to-blue-500/20 flex items-center justify-center">
-                                <svg class="w-16 h-16 text-emerald-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9a2 2 0 00-2-2h-2m-4-3H9M7 16h6M7 8h6v4H7V8z" />
-                                </svg>
-                            </div>
+                            <!-- Placeholder image for project -->
+                            <img src="https://placehold.co/900x500/10b981/ffffff?text=PBlogs" alt="PBlogs Project Thumbnail" class="w-full h-full object-cover object-center">
                         </div>
                     </div>
                     <div class="md:w-2/3 p-8">
@@ -469,23 +529,21 @@
             </div>
 
             <!-- Project 2 (Placeholder) -->
-            <div class="bg-gradient-to-br from-slate-800 to-slate-900 rounded-xl overflow-hidden border border-slate-700 hover:border-emerald-500/30 transition duration-300 opacity-70 card-hover">
-                <div class="p-8 text-center">
-                    <div class="w-16 h-16 bg-slate-700 rounded-full flex items-center justify-center mx-auto mb-4">
-                        <svg class="w-8 h-8 text-emerald-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
-                        </svg>
-                    </div>
-                    <h3 class="text-xl font-bold text-white mb-2">More Coming Soon</h3>
-                    <p class="text-slate-400">I'm currently working on new projects. Stay tuned!</p>
+            <div class="bg-gradient-to-br from-slate-800 to-slate-900 rounded-xl overflow-hidden border border-slate-700 hover:border-emerald-500/30 transition duration-300 opacity-80 card-hover glow-box flex flex-col justify-center items-center p-8 section-animate-right" style="animation-delay: 0.4s;">
+                <div class="w-16 h-16 bg-slate-700 rounded-full flex items-center justify-center mx-auto mb-4 animate-pulse">
+                    <svg class="w-8 h-8 text-emerald-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
+                    </svg>
                 </div>
+                <h3 class="text-xl font-bold text-white mb-2 text-center">More Coming Soon!</h3>
+                <p class="text-slate-400 text-center">I'm currently working on new projects. Stay tuned for exciting updates.</p>
             </div>
         </div>
     </div>
 </section>
 
 <!-- Contact Section -->
-<section id="contact" class="py-20 gradient-bg">
+<section id="contact" class="py-20 gradient-bg section-animate-fadeIn">
     <div class="max-w-4xl mx-auto px-6">
         <div class="text-center mb-16">
             <h2 class="text-3xl md:text-4xl font-bold mb-4">
@@ -499,20 +557,26 @@
 
         <div class="grid md:grid-cols-2 gap-12">
             <!-- Contact Form -->
-            <div class="glass-effect rounded-xl p-8 border border-slate-700/50">
+            <div class="glass-effect rounded-xl p-8 border border-slate-700/50 section-animate-left" style="animation-delay: 0.2s;">
                 <h3 class="text-xl font-bold text-white mb-6">Send Me a Message</h3>
                 <form class="space-y-6" method="post" th:action="@{/contact/accept}">
+                    <!-- Success message for contact form -->
+                    <div th:if="${param.success}" class="bg-emerald-500/20 text-emerald-400 p-4 rounded-lg mb-6 flex items-center animate-fadeIn">
+                        <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                        <span>Your message has been sent successfully!</span>
+                    </div>
+
                     <div>
                         <label for="name" class="block text-slate-300 mb-2">Your Name</label>
-                        <input type="text" id="name" name="name" class="w-full px-4 py-3 bg-slate-800/50 border border-slate-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-emerald-500 text-white placeholder-slate-500 transition duration-300" placeholder="John Doe">
+                        <input type="text" id="name" name="name" required class="w-full px-4 py-3 bg-slate-800/50 border border-slate-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-emerald-500 text-white placeholder-slate-500 transition duration-300" placeholder="John Doe">
                     </div>
                     <div>
                         <label for="email" class="block text-slate-300 mb-2">Email Address</label>
-                        <input type="email" id="email" name="email" class="w-full px-4 py-3 bg-slate-800/50 border border-slate-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-emerald-500 text-white placeholder-slate-500 transition duration-300" placeholder="you@example.com">
+                        <input type="email" id="email" name="email" required class="w-full px-4 py-3 bg-slate-800/50 border border-slate-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-emerald-500 text-white placeholder-slate-500 transition duration-300" placeholder="you@example.com">
                     </div>
                     <div>
                         <label for="message" class="block text-slate-300 mb-2">Your Message</label>
-                        <textarea id="message" rows="5" name="message" class="w-full px-4 py-3 bg-slate-800/50 border border-slate-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-emerald-500 text-white placeholder-slate-500 transition duration-300" placeholder="Hello Prasun, I'd like to talk about..."></textarea>
+                        <textarea id="message" rows="5" name="message" required class="w-full px-4 py-3 bg-slate-800/50 border border-slate-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-emerald-500 text-white placeholder-slate-500 transition duration-300" placeholder="Hello Prasun, I'd like to talk about..."></textarea>
                     </div>
                     <button type="submit" class="w-full py-3 bg-gradient-to-r from-emerald-500 to-blue-500 hover:from-emerald-600 hover:to-blue-600 text-white font-bold rounded-lg transition duration-300 transform hover:scale-[1.02]">
                         Send Message
@@ -521,11 +585,11 @@
             </div>
 
             <!-- Contact Info -->
-            <div class="space-y-8">
+            <div class="space-y-8 section-animate-right" style="animation-delay: 0.4s;">
                 <div>
                     <h3 class="text-xl font-bold text-white mb-4">Contact Information</h3>
                     <div class="space-y-4">
-                        <div class="flex items-start space-x-4 glass-effect p-4 rounded-lg border border-slate-700/50">
+                        <div class="flex items-start space-x-4 glass-effect p-4 rounded-lg border border-slate-700/50 card-hover">
                             <div class="w-10 h-10 rounded-full bg-emerald-500/10 flex items-center justify-center mt-1">
                                 <svg class="w-5 h-5 text-emerald-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
@@ -533,10 +597,11 @@
                             </div>
                             <div>
                                 <h4 class="text-slate-300 font-medium">Email</h4>
-                                <a th:href="|mailto:${email}|" class="text-emerald-400 hover:text-emerald-300" th:text="${email}"></a>
+                                <a th:if="${email}" th:href="|mailto:${email}|" class="text-emerald-400 hover:text-emerald-300" th:text="${email}">your.email@example.com</a>
+                                <span th:unless="${email}" class="text-slate-400">Email not available</span>
                             </div>
                         </div>
-                        <div class="flex items-start space-x-4 glass-effect p-4 rounded-lg border border-slate-700/50">
+                        <div class="flex items-start space-x-4 glass-effect p-4 rounded-lg border border-slate-700/50 card-hover">
                             <div class="w-10 h-10 rounded-full bg-emerald-500/10 flex items-center justify-center mt-1">
                                 <svg class="w-5 h-5 text-emerald-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
@@ -544,10 +609,11 @@
                             </div>
                             <div>
                                 <h4 class="text-slate-300 font-medium">Phone</h4>
-                                <a th:href="|tel:${contactPhone}|" class="text-emerald-400 hover:text-emerald-300" th:text="${contactPhone}">+977 XXXXXXXX</a>
+                                <a th:if="${contactPhone}" th:href="|tel:${contactPhone}|" class="text-emerald-400 hover:text-emerald-300" th:text="${contactPhone}">+977 XXXXXXXXXX</a>
+                                <span th:unless="${contactPhone}" class="text-slate-400">Phone not available</span>
                             </div>
                         </div>
-                        <div class="flex items-start space-x-4 glass-effect p-4 rounded-lg border border-slate-700/50">
+                        <div class="flex items-start space-x-4 glass-effect p-4 rounded-lg border border-slate-700/50 card-hover">
                             <div class="w-10 h-10 rounded-full bg-emerald-500/10 flex items-center justify-center mt-1">
                                 <svg class="w-5 h-5 text-emerald-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
@@ -565,19 +631,19 @@
                 <div>
                     <h3 class="text-xl font-bold text-white mb-4">Follow Me</h3>
                     <div class="flex space-x-4">
-                        <a th:href="@{${githubProfile}}" target="_blank" class="w-12 h-12 rounded-full bg-slate-800/50 hover:bg-slate-700/70 flex items-center justify-center transition duration-300 card-hover border border-slate-700/50">
-                            <svg class="w-5 h-5 text-white" fill="currentColor" viewBox="0 0 24 24">
+                        <a th:href="@{${githubProfile} ?: 'https://github.com/yourusername'}" target="_blank" class="w-12 h-12 rounded-full bg-slate-800/50 hover:bg-emerald-500/20 flex items-center justify-center transition duration-300 card-hover border border-slate-700/50 hover:border-emerald-500/50">
+                            <svg class="w-6 h-6 text-white group-hover:text-emerald-500 transition-colors duration-300" fill="currentColor" viewBox="0 0 24 24">
                                 <path d="M12 0a12 12 0 00-3.8 23.4c.6.1.8-.3.8-.6v-2.2c-3.3.7-4-1.6-4-1.6-.5-1.3-1.2-1.6-1.2-1.6-1-.7.1-.7.1-.7 1.1.1 1.7 1.2 1.7 1.2 1 1.8 2.8 1.3 3.5 1 .1-.8.4-1.3.7-1.6-2.7-.3-5.5-1.3-5.5-5.9 0-1.3.5-2.4 1.2-3.2-.1-.3-.5-1.5.1-3.2 0 0 1-.3 3.3 1.2a11.5 11.5 0 016 0c2.3-1.5 3.3-1.2 3.3-1.2.6 1.7.2 2.9.1 3.2.8.8 1.2 2 1.2 3.2 0 4.6-2.8 5.6-5.5 5.9.4.4.8 1.1.8 2.2v3.3c0 .3.2.7.8.6A12 12 0 0012 0z" />
                             </svg>
                         </a>
-                        <a href="https://linkedin.com/in/newundiputed" target="_blank" class="w-12 h-12 rounded-full bg-slate-800/50 hover:bg-slate-700/70 flex items-center justify-center transition duration-300 card-hover border border-slate-700/50">
-                            <svg class="w-5 h-5 text-white" fill="currentColor" viewBox="0 0 24 24">
+                        <a href="https://linkedin.com/in/newundiputed" target="_blank" class="w-12 h-12 rounded-full bg-slate-800/50 hover:bg-emerald-500/20 flex items-center justify-center transition duration-300 card-hover border border-slate-700/50 hover:border-emerald-500/50">
+                            <svg class="w-6 h-6 text-white group-hover:text-emerald-500 transition-colors duration-300" fill="currentColor" viewBox="0 0 24 24">
                                 <path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z" />
                             </svg>
                         </a>
-                        <a href="https://instagram.com/newundisputed" target="_blank" class="w-12 h-12 rounded-full bg-slate-800/50 hover:bg-slate-700/70 flex items-center justify-center transition duration-300 card-hover border border-slate-700/50">
-                            <svg class="w-5 h-5 text-white" fill="currentColor" viewBox="0 0 24 24">
-                                <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z" />
+                        <a href="https://instagram.com/newundisputed" target="_blank" class="w-12 h-12 rounded-full bg-slate-800/50 hover:bg-emerald-500/20 flex items-center justify-center transition duration-300 card-hover border border-slate-700/50 hover:border-emerald-500/50">
+                            <svg class="w-6 h-6 text-white group-hover:text-emerald-500 transition-colors duration-300" fill="currentColor" viewBox="0 0 24 24">
+                                <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919-4.919-1.266-.058-1.644-.07-4.85-.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z" />
                             </svg>
                         </a>
                     </div>
@@ -627,7 +693,11 @@
     const hamburgerIcon = document.getElementById('hamburger-icon');
 
     menuToggle.addEventListener('click', () => {
-        mobileMenu.classList.toggle('hidden');
+        const isHidden = mobileMenu.classList.toggle('hidden');
+        menuToggle.setAttribute('aria-expanded', !isHidden); // Set aria-expanded
+        // Toggle opacity and scale for smooth animation
+        mobileMenu.classList.toggle('opacity-0');
+        mobileMenu.classList.toggle('scale-y-0');
         hamburgerIcon.classList.toggle('text-emerald-500');
         hamburgerIcon.classList.toggle('text-white');
     });
@@ -635,7 +705,8 @@
     // Close mobile menu when clicking on a link
     document.querySelectorAll('#mobile-menu a').forEach(link => {
         link.addEventListener('click', () => {
-            mobileMenu.classList.add('hidden');
+            mobileMenu.classList.add('hidden', 'opacity-0', 'scale-y-0');
+            menuToggle.setAttribute('aria-expanded', 'false'); // Reset aria-expanded
             hamburgerIcon.classList.remove('text-white');
             hamburgerIcon.classList.add('text-emerald-500');
         });
@@ -666,11 +737,11 @@
 
     const animateSkillBars = () => {
         skillBars.forEach(bar => {
-            const width = bar.style.width;
-            bar.style.width = '0';
+            const width = bar.style.width; // Get original width
+            bar.style.width = '0'; // Reset to 0 for re-animation
             setTimeout(() => {
-                bar.style.width = width;
-            }, 100);
+                bar.style.width = width; // Animate to original width
+            }, 100); // Small delay to allow reset
         });
     };
 
@@ -684,35 +755,76 @@
 
             const targetId = this.getAttribute('href');
             const targetElement = document.querySelector(targetId);
+            const headerOffset = 80; // Height of fixed header
+            const elementPosition = targetElement.getBoundingClientRect().top;
+            const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
 
             if (targetElement) {
                 window.scrollTo({
-                    top: targetElement.offsetTop - 80,
+                    top: offsetPosition,
                     behavior: 'smooth'
                 });
             }
         });
     });
 
-    // Intersection Observer for animations
+    // Intersection Observer for section animations and skill bars
     const observerOptions = {
-        threshold: 0.1
+        threshold: 0.1, // Trigger when 10% of element is visible
+        rootMargin: "0px 0px -50px 0px" // Adjust for earlier trigger if needed
     };
 
-    const observer = new IntersectionObserver((entries) => {
+    const sectionObserver = new IntersectionObserver((entries, observer) => {
         entries.forEach(entry => {
             if (entry.isIntersecting) {
-                if (entry.target.id === 'skills') {
-                    animateSkillBars();
+                // Apply general fade-in if not already applied by slide-in
+                if (!entry.target.classList.contains('section-animate-left') && !entry.target.classList.contains('section-animate-right')) {
+                    entry.target.classList.add('animate-fadeIn');
+                } else {
+                    // Re-trigger slide-in animations (useful for re-scrolling)
+                    entry.target.style.animation = 'none'; // Reset animation
+                    entry.target.offsetHeight; // Trigger reflow
+                    entry.target.style.animation = null; // Re-apply animation
                 }
-                entry.target.classList.add('animate-fadeIn');
+
+                if (entry.target.id === 'skills') {
+                    animateSkillBars(); // Trigger skill bar animation
+                }
+                observer.unobserve(entry.target); // Stop observing once animated
             }
         });
     }, observerOptions);
 
+    // Observe all sections for animation
     document.querySelectorAll('section').forEach(section => {
-        observer.observe(section);
+        sectionObserver.observe(section);
     });
+
+    // Manually add specific slide-in classes for initial staggered animation
+    document.querySelector('#home .section-animate-left').style.animationDelay = '0.2s';
+    document.querySelector('#home .section-animate-right').style.animationDelay = '0.4s';
+    document.querySelector('#about .section-animate-left').style.animationDelay = '0.2s';
+    document.querySelector('#about .section-animate-right').style.animationDelay = '0.4s';
+    document.querySelector('#skills .section-animate-left').style.animationDelay = '0.2s';
+    document.querySelector('#skills .section-animate-right').style.animationDelay = '0.4s';
+    document.querySelector('#projects .section-animate-left').style.animationDelay = '0.2s';
+    document.querySelector('#projects .section-animate-right').style.animationDelay = '0.4s';
+    document.querySelector('#contact .section-animate-left').style.animationDelay = '0.2s';
+    document.querySelector('#contact .section-animate-right').style.animationDelay = '0.4s';
+
+
+    // Placeholder image fallback for img elements
+    document.querySelectorAll('img').forEach(img => {
+        img.onerror = function() {
+            // Check if it's already the placeholder to avoid infinite loop
+            if (!this.src.includes('placehold.co')) {
+                const width = this.naturalWidth > 0 ? this.naturalWidth : 900;
+                const height = this.naturalHeight > 0 ? this.naturalHeight : 720;
+                this.src = `https://placehold.co/${width}x${height}/0f172a/10b981?text=Image+Error`;
+            }
+        };
+    });
+
 </script>
 </body>
 </html>

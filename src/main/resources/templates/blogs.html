@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>All Notes</title>
+  <title>All Notes | Prasun.dev</title>
 
   <!-- SEO Meta Tags -->
   <meta name="description" content="Read powerful coding notes, blogs, and ideas from Prasun. Explore projects and insights.">
@@ -14,84 +14,189 @@
   <!-- Open Graph Meta Tags for social sharing -->
   <meta property="og:title" content="All Notes | Prasun.dev">
   <meta property="og:description" content="Explore Prasun's coding notes, blogs, and developer journey.">
-  <meta property="og:image" content="https://example.com/your-image.jpg"> <!-- Replace with your image URL -->
-  <meta property="og:url" content="https://prasun.dev/notes"> <!-- Replace with your actual URL -->
+  <meta property="og:image" content="https://placehold.co/1200x630/10b981/ffffff?text=Prasun.dev+Blogs"> <!-- Updated placeholder -->
+  <meta property="og:url" th:content="@{/blogs}"> <!-- Use Thymeleaf for dynamic URL -->
   <meta property="og:type" content="website">
 
   <!-- Twitter Card Meta -->
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="All Notes | Prasun.dev">
   <meta name="twitter:description" content="Explore Prasun's coding notes, blogs, and developer journey.">
-  <meta name="twitter:image" content="https://example.com/your-image.jpg"> <!-- Replace with your image URL -->
+  <meta name="twitter:image" content="https://placehold.co/1200x675/10b981/ffffff?text=Prasun.dev+Blogs"> <!-- Updated placeholder -->
 
   <!-- Favicon -->
   <link rel="icon" href="/favicon.ico" type="image/x-icon">
 
   <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Google Fonts - Inter -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+
   <style>
-    .glass-effect {
-      backdrop-filter: blur(12px);
-      background-color: rgba(30, 41, 59, 0.7); /* slate-800 + opacity */
+    /* Base styles for Inter font */
+    body {
+      font-family: 'Inter', sans-serif;
+    }
+
+    /* Keyframe Animations */
+    @keyframes fadeIn {
+      0% { opacity: 0; transform: translateY(20px); }
+      100% { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes gradientFlow {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+    @keyframes bounceScroll {
+      0%, 20%, 50%, 80%, 100% { transform: translateY(0); }
+      40% { transform: translateY(-10px); }
+      60% { transform: translateY(-5px); }
+    }
+    @keyframes slideInUp {
+      0% { opacity: 0; transform: translateY(20px); }
+      100% { opacity: 1; transform: translateY(0); }
+    }
+
+    /* Custom Animation Classes */
+    .animate-fadeIn {
+      animation: fadeIn 1s ease forwards;
     }
     .gradient-text {
-      background: linear-gradient(90deg, #14b8a6, #3b82f6);
+      background-clip: text;
       -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
+      color: transparent;
+      background-image: linear-gradient(90deg, #10b981, #3b82f6); /* Emerald to Blue */
+      background-size: 200% 200%;
+      animation: gradientFlow 8s ease infinite;
+    }
+    .glass-effect {
+      background: rgba(15, 23, 42, 0.7); /* Slate-900 with opacity */
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+    .nav-link {
+      position: relative;
+    }
+    .nav-link::after {
+      content: '';
+      position: absolute;
+      width: 0;
+      height: 2px;
+      bottom: -2px;
+      left: 0;
+      background: linear-gradient(90deg, #10b981, #3b82f6); /* Emerald to Blue */
+      transition: width 0.4s cubic-bezier(0.65, 0, 0.35, 1);
+    }
+    .nav-link:hover::after {
+      width: 100%;
+    }
+    .card-hover {
+      transition: all 0.4s cubic-bezier(0.65, 0, 0.35, 1);
+    }
+    .card-hover:hover {
+      transform: translateY(-8px) scale(1.01); /* Slight scale on hover */
+    }
+    .back-to-top-button {
+      animation: bounceScroll 2s infinite;
+    }
+    /* Specific animation for blog cards */
+    .blog-card-animation {
+      opacity: 0;
+      animation: slideInUp 0.6s ease forwards;
+    }
+    .blog-read-more-link {
+      transition: color 0.3s ease, transform 0.3s ease;
+    }
+    .blog-read-more-link:hover {
+      transform: translateX(5px);
     }
   </style>
 </head>
 
-<body class="bg-gray-950 text-white font-sans">
+<body class="bg-slate-900 text-slate-100 font-sans antialiased scroll-smooth overflow-x-hidden">
 
 <!-- HEADER -->
-<header class="fixed top-0 w-full z-50 glass-effect border-b border-slate-700/50 shadow-md">
+<header class="fixed top-0 w-full z-50 glass-effect border-b border-slate-800/50">
   <div class="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
     <!-- Logo -->
-    <div class="text-2xl font-bold tracking-tight">
-      <a href="/" class="gradient-text hover:brightness-125 transition duration-300">Prasun.dev</a>
+    <div class="text-2xl font-bold">
+      <a th:href="@{/}" class="gradient-text hover:brightness-110 transition duration-300">Prasun.dev</a>
     </div>
 
     <!-- Desktop Nav -->
-    <nav class="hidden md:flex space-x-6 text-sm font-medium">
-      <a th:href="@{/}" class="text-slate-300 hover:text-white transition duration-200">Home</a>
-      <a th:href="@{/}" class="text-slate-300 hover:text-white transition duration-200">About</a>
-      <a th:href="@{/blogs}" class="nav-link text-slate-300 hover:text-white transition duration-300">Blogs</a>
-      <a th:href="@{/}" class="text-slate-300 hover:text-white transition duration-200">Projects</a>
-      <a th:href="@{/}" class="text-slate-300 hover:text-white transition duration-200">Contact</a>
-      <a th:href="@{/admin}" class="text-emerald-400 hover:text-white transition duration-200">Admin</a>
+    <nav class="hidden md:flex space-x-8">
+      <a th:href="@{/#home}" class="nav-link text-slate-300 hover:text-white transition duration-300">Home</a>
+      <a th:href="@{/#about}" class="nav-link text-slate-300 hover:text-white transition duration-300">About</a>
+      <a th:href="@{/blogs}" class="nav-link text-emerald-400 hover:text-white transition duration-300">Blogs</a>
+      <a th:href="@{/#projects}" class="nav-link text-slate-300 hover:text-white transition duration-300">Projects</a>
+      <a th:href="@{/#contact}" class="nav-link text-slate-300 hover:text-white transition duration-300">Contact</a>
+      <a th:href="@{/admin}" class="nav-link text-slate-300 hover:text-white transition duration-300">Admin</a>
     </nav>
 
     <!-- Mobile Nav Toggle -->
-    <button id="menu-toggle" class="md:hidden focus:outline-none">
-      <svg id="hamburger-icon" class="w-6 h-6 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+    <button id="menu-toggle" class="md:hidden focus:outline-none relative" aria-label="Toggle navigation menu" aria-expanded="false" aria-controls="mobile-menu">
+      <svg id="hamburger-icon" class="w-7 h-7 text-emerald-500 transition-all duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
       </svg>
     </button>
   </div>
 
   <!-- Mobile Menu -->
-  <div id="mobile-menu" class="hidden md:hidden absolute top-full left-0 right-0 glass-effect py-4 px-6 rounded-b-lg shadow-xl text-sm">
-    <div class="flex flex-col space-y-3">
-      <a th:href="@{/}" class="text-slate-300 hover:text-white transition">Home</a>
-      <a th:href="@{/}" class="text-slate-300 hover:text-white transition">About</a>
-      <a th:href="@{/blogs}" class="nav-link text-slate-300 hover:text-white transition duration-300">Blogs</a>
-      <a th:href="@{/}" class="text-slate-300 hover:text-white transition">Projects</a>
-      <a th:href="@{/}" class="text-slate-300 hover:text-white transition">Contact</a>
-      <a th:href="@{/admin}" class="text-emerald-400 hover:text-white transition">Admin</a>
+  <div id="mobile-menu" class="hidden md:hidden absolute top-full left-0 right-0 glass-effect py-4 px-6 rounded-b-lg shadow-xl origin-top transition-all duration-300 ease-in-out scale-y-0 opacity-0">
+    <div class="flex flex-col space-y-4">
+      <a th:href="@{/#home}" class="text-slate-300 hover:text-white transition duration-300 py-2 border-b border-slate-800/50">Home</a>
+      <a th:href="@{/#about}" class="text-slate-300 hover:text-white transition duration-300 py-2 border-b border-slate-800/50">About</a>
+      <a th:href="@{/blogs}" class="text-emerald-400 hover:text-white transition duration-300 py-2 border-b border-slate-800/50">Blogs</a>
+      <a th:href="@{/#projects}" class="text-slate-300 hover:text-white transition duration-300 py-2 border-b border-slate-800/50">Projects</a>
+      <a th:href="@{/#contact}" class="text-slate-300 hover:text-white transition duration-300 py-2">Contact</a>
+      <a th:href="@{/admin}" class="text-slate-300 hover:text-white transition duration-300 py-2">Admin</a>
     </div>
   </div>
 </header>
 
 <!-- BLOG SECTION -->
-<main class="pt-28 pb-16 px-4 sm:px-6">
-  <section id="blogs" class="max-w-4xl mx-auto space-y-8">
-    <div th:each="blog : ${blogs}" class="bg-gray-800/70 rounded-2xl shadow-lg p-4 sm:p-6 hover:shadow-2xl transition-shadow duration-300 border border-slate-700/40">
-      <h1 th:text="${blog.title}" class="text-2xl font-bold text-white mb-2 tracking-tight"></h1>
-      <p th:text="${blog.description}" class="text-gray-300 mb-4 leading-relaxed"></p>
-      <a th:href="@{/read-post/{id}(id=${blog.id})}" class="text-cyan-400 hover:text-white underline underline-offset-2 font-medium transition">Read more →</a>
+<main class="pt-28 pb-16 px-4 sm:px-6 bg-slate-900">
+  <div class="max-w-4xl mx-auto mb-12 text-center animate-fadeIn">
+    <h1 class="text-4xl md:text-5xl font-extrabold mb-4">
+      <span class="gradient-text">My Thoughts & Blogs</span>
+    </h1>
+    <div class="w-20 h-1 bg-gradient-to-r from-emerald-500 to-blue-500 mx-auto mb-6 rounded-full"></div>
+    <p class="text-lg text-slate-300 max-w-2xl mx-auto">
+      A collection of my coding notes, technical insights, and reflections on development and discipline.
+    </p>
+  </div>
+
+  <section id="blog-posts" class="max-w-4xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-8">
+    <!-- Loop through blogs here -->
+    <div th:each="blog, iStat : ${blogs}"
+         class="glass-effect rounded-2xl shadow-lg p-6 hover:shadow-2xl transition-shadow duration-300 border border-slate-700/40 card-hover blog-card-animation"
+         th:style="'animation-delay: ' + (0.1 * ${iStat.index}) + 's;'">
+      <h2 th:text="${blog.title}" class="text-2xl font-bold text-white mb-3 tracking-tight"></h2>
+      <p th:text="${blog.description}" class="text-slate-300 mb-5 leading-relaxed text-base"></p>
+      <a th:href="@{/read-post/{id}(id=${blog.id})}" class="inline-flex items-center text-emerald-400 hover:text-emerald-300 underline underline-offset-2 font-medium transition duration-300 blog-read-more-link">
+        Read more
+        <svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3" />
+        </svg>
+      </a>
+    </div>
+
+    <!-- Placeholder blog entry if no blogs are present or for future content -->
+    <div th:if="${blogs == null or blogs.isEmpty()}" class="glass-effect rounded-2xl shadow-lg p-6 border border-slate-700/40 flex flex-col items-center justify-center text-center blog-card-animation" style="animation-delay: 0.1s;">
+      <div class="w-16 h-16 bg-slate-700 rounded-full flex items-center justify-center mx-auto mb-4 animate-pulse">
+        <svg class="w-8 h-8 text-emerald-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
+        </svg>
+      </div>
+      <h2 class="text-xl font-bold text-white mb-2">No Blogs Yet!</h2>
+      <p class="text-slate-400">Stay tuned. New content is coming soon!</p>
     </div>
   </section>
 </main>
+
 <!-- Footer -->
 <footer class="py-12 bg-slate-900 border-t border-slate-800/50">
   <div class="max-w-4xl mx-auto px-4 sm:px-6">
@@ -104,11 +209,11 @@
       </div>
 
       <div class="flex flex-wrap gap-6 justify-center">
-        <a th:href="@{/}" class="text-slate-400 hover:text-white transition duration-300">Home</a>
-        <a th:href="@{/}" class="text-slate-400 hover:text-white transition duration-300">About</a>
+        <a th:href="@{/#home}" class="text-slate-400 hover:text-white transition duration-300">Home</a>
+        <a th:href="@{/#about}" class="text-slate-400 hover:text-white transition duration-300">About</a>
         <a th:href="@{/blogs}" class="text-slate-400 hover:text-white transition duration-300">Blogs</a>
-        <a th:href="@{/}" class="text-slate-400 hover:text-white transition duration-300">Projects</a>
-        <a th:href="@{/}" class="text-slate-400 hover:text-white transition duration-300">Contact</a>
+        <a th:href="@{/#projects}" class="text-slate-400 hover:text-white transition duration-300">Projects</a>
+        <a th:href="@{/#contact}" class="text-slate-400 hover:text-white transition duration-300">Contact</a>
       </div>
     </div>
 
@@ -118,6 +223,13 @@
   </div>
 </footer>
 
+<!-- Back to Top Button -->
+<button id="back-to-top" class="fixed bottom-8 right-8 w-12 h-12 bg-gradient-to-br from-emerald-500 to-blue-500 hover:from-emerald-600 hover:to-blue-600 rounded-full flex items-center justify-center shadow-lg transition duration-300 transform hover:scale-110 opacity-0 invisible z-50 back-to-top-button">
+  <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 10l7-7m0 0l7 7m-7-7v18" />
+  </svg>
+</button>
+
 <script>
   // Mobile menu toggle
   const menuToggle = document.getElementById('menu-toggle');
@@ -125,7 +237,11 @@
   const hamburgerIcon = document.getElementById('hamburger-icon');
 
   menuToggle.addEventListener('click', () => {
-    mobileMenu.classList.toggle('hidden');
+    const isHidden = mobileMenu.classList.toggle('hidden');
+    menuToggle.setAttribute('aria-expanded', !isHidden); // Set aria-expanded
+    // Toggle opacity and scale for smooth animation
+    mobileMenu.classList.toggle('opacity-0');
+    mobileMenu.classList.toggle('scale-y-0');
     hamburgerIcon.classList.toggle('text-emerald-500');
     hamburgerIcon.classList.toggle('text-white');
   });
@@ -133,7 +249,8 @@
   // Close mobile menu when clicking on a link
   document.querySelectorAll('#mobile-menu a').forEach(link => {
     link.addEventListener('click', () => {
-      mobileMenu.classList.add('hidden');
+      mobileMenu.classList.add('hidden', 'opacity-0', 'scale-y-0');
+      menuToggle.setAttribute('aria-expanded', 'false'); // Reset aria-expanded
       hamburgerIcon.classList.remove('text-white');
       hamburgerIcon.classList.add('text-emerald-500');
     });
@@ -159,57 +276,67 @@
     });
   });
 
-  // Animate skill bars on scroll
-  const skillBars = document.querySelectorAll('.skill-bar');
-
-  const animateSkillBars = () => {
-    skillBars.forEach(bar => {
-      const width = bar.style.width;
-      bar.style.width = '0';
-      setTimeout(() => {
-        bar.style.width = width;
-      }, 100);
-    });
-  };
-
   // Set current year in footer
   document.getElementById('year').textContent = new Date().getFullYear();
 
-  // Smooth scrolling for anchor links
+  // Smooth scrolling for anchor links (adjusted for main page sections)
+  // Links starting with /# (e.g., /#home) will navigate to the root and then scroll
+  document.querySelectorAll('a[th\\:href^="/#"]').forEach(anchor => {
+    anchor.addEventListener('click', function (e) {
+      e.preventDefault();
+      const targetFragment = this.getAttribute('href'); // e.g., "/#home"
+      window.location.href = `/${targetFragment}`; // Navigate to the root with the fragment
+    });
+  });
+
+  // Smooth scrolling for internal links on the blog page itself (e.g., if you add an internal section)
   document.querySelectorAll('a[href^="#"]').forEach(anchor => {
     anchor.addEventListener('click', function (e) {
       e.preventDefault();
-
       const targetId = this.getAttribute('href');
       const targetElement = document.querySelector(targetId);
-
+      const headerOffset = 80; // Height of fixed header
       if (targetElement) {
+        const elementPosition = targetElement.getBoundingClientRect().top;
+        const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
         window.scrollTo({
-          top: targetElement.offsetTop - 80,
+          top: offsetPosition,
           behavior: 'smooth'
         });
       }
     });
   });
 
-  // Intersection Observer for animations
-  const observerOptions = {
-    threshold: 0.1
+  // Intersection Observer for blog card animations
+  const blogCardObserverOptions = {
+    threshold: 0.1, // Trigger when 10% of element is visible
+    rootMargin: "0px 0px -50px 0px" // Adjust for earlier trigger if needed
   };
 
-  const observer = new IntersectionObserver((entries) => {
+  const blogCardObserver = new IntersectionObserver((entries, observer) => {
     entries.forEach(entry => {
       if (entry.isIntersecting) {
-        if (entry.target.id === 'skills') {
-          animateSkillBars();
-        }
-        entry.target.classList.add('animate-fadeIn');
+        entry.target.classList.add('blog-card-animation');
+        observer.unobserve(entry.target); // Stop observing once animated
       }
     });
-  }, observerOptions);
+  }, blogCardObserverOptions);
 
-  document.querySelectorAll('section').forEach(section => {
-    observer.observe(section);
+  // Observe all blog cards for animation
+  document.querySelectorAll('.blog-card-animation').forEach(card => {
+    blogCardObserver.observe(card);
+  });
+
+  // Placeholder image fallback for img elements
+  document.querySelectorAll('img').forEach(img => {
+    img.onerror = function() {
+      // Check if it's already the placeholder to avoid infinite loop
+      if (!this.src.includes('placehold.co')) {
+        const width = this.naturalWidth > 0 ? this.naturalWidth : 900;
+        const height = this.naturalHeight > 0 ? this.naturalHeight : 720;
+        this.src = `https://placehold.co/${width}x${height}/0f172a/10b981?text=Image+Error`;
+      }
+    };
   });
 </script>
 

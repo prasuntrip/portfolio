@@ -2,181 +2,311 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8" />
-    <title th:text="${post.title}">Notes Post</title>
-
-    <!-- Meta Tags for SEO -->
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta th:if="${post.description}" th:attr="content=${post.description}" name="description" content="Read in-depth technical and personal development blog posts by Prasun.">
-    <meta th:if="${post.title}" th:attr="content=${post.title}" name="keywords" content="Java, Spring Boot, Programming, Self-Improvement, Notes, Blog, Prasun.dev">
+    <title th:text="${post.title} ?: 'Notes Post'">Notes Post | Prasun.dev</title>
+
+    <!-- SEO Meta Tags -->
+    <meta th:attr="content=${post.description}" name="description" content="Read in-depth technical and personal development blog posts by Prasun."/>
+    <meta th:attr="content=${post.title}" name="keywords" content="Java, Spring Boot, Programming, Self-Improvement, Notes, Blog, Prasun.dev"/>
+    <meta name="author" content="Prasun">
+    <meta name="robots" content="index, follow">
 
     <!-- Open Graph for Social Sharing -->
     <meta property="og:title" th:content="${post.title}" />
     <meta property="og:description" th:content="${post.description}" />
     <meta property="og:type" content="article" />
     <meta property="og:site_name" content="Prasun.dev" />
-    <meta property="og:image" th:content="${post.imageURL}" />
-    <meta name="twitter:image" th:content="${post.imageURL}" />
-    <meta property="og:image" content="/images/preview.png" />
+    <meta property="og:image" th:content="${post.imageURL ?: 'https://placehold.co/1200x630/10b981/ffffff?text=Prasun.dev+Blog+Post'}" />
+    <meta property="og:url" th:content="@{/read-post/{id}(id=${post.id})}" />
+
 
     <!-- Twitter Card -->
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:title" th:content="${post.title}" />
     <meta name="twitter:description" th:content="${post.description}" />
-    <meta name="twitter:image" content="/images/preview.png" />
+    <meta name="twitter:image" th:content="${post.imageURL ?: 'https://placehold.co/1200x675/10b981/ffffff?text=Prasun.dev+Blog+Post'}" />
+
+    <!-- Favicon -->
+    <link rel="icon" href="/favicon.ico" type="image/x-icon">
 
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts - Inter -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+
 
     <style>
+        /* Base styles for Inter font */
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+
+        /* Keyframe Animations */
+        @keyframes fadeIn {
+            0% { opacity: 0; transform: translateY(20px); }
+            100% { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes gradientFlow {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+        @keyframes bounceScroll {
+            0%, 20%, 50%, 80%, 100% { transform: translateY(0); }
+            40% { transform: translateY(-10px); }
+            60% { transform: translateY(-5px); }
+        }
+
+        /* Custom Animation Classes */
+        .animate-fadeIn {
+            animation: fadeIn 1s ease forwards;
+        }
+        .gradient-text {
+            background-clip: text;
+            -webkit-background-clip: text;
+            color: transparent;
+            background-image: linear-gradient(90deg, #10b981, #3b82f6); /* Emerald to Blue */
+            background-size: 200% 200%;
+            animation: gradientFlow 8s ease infinite;
+        }
         .glass-effect {
-            background: rgba(30, 41, 59, 0.7);
+            background: rgba(15, 23, 42, 0.7); /* Slate-900 with opacity */
             backdrop-filter: blur(10px);
             -webkit-backdrop-filter: blur(10px);
-            border-radius: 0.5rem;
+            border: 1px solid rgba(255, 255, 255, 0.1);
         }
-
-        .gradient-text {
-            background: linear-gradient(90deg, #10b981, #22d3ee);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-
         .nav-link {
-            transition: color 0.3s ease;
+            position: relative;
+        }
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: -2px;
+            left: 0;
+            background: linear-gradient(90deg, #10b981, #3b82f6); /* Emerald to Blue */
+            transition: width 0.4s cubic-bezier(0.65, 0, 0.35, 1);
+        }
+        .nav-link:hover::after {
+            width: 100%;
+        }
+        .back-to-top-button {
+            animation: bounceScroll 2s infinite;
         }
 
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
+        /* Custom prose-like styling for dynamic content */
+        .prose-content {
+            font-size: 1.125rem; /* text-lg */
+            line-height: 1.75; /* leading-relaxed */
+            color: #E2E8F0; /* slate-100 equivalent */
         }
-        .animate-fadeIn {
-            animation: fadeIn 0.8s ease forwards;
+        .prose-content h1, .prose-content h2, .prose-content h3, .prose-content h4, .prose-content h5, .prose-content h6 {
+            color: #FFFFFF; /* text-white */
+            font-weight: 700; /* font-bold */
+            margin-top: 1.5em;
+            margin-bottom: 0.75em;
         }
+        .prose-content h1 { font-size: 2.5rem; line-height: 1.2; } /* Larger for main content headings */
+        .prose-content h2 { font-size: 2.25rem; line-height: 1.25; } /* text-4xl */
+        .prose-content h3 { font-size: 1.875rem; line-height: 1.3; } /* text-3xl */
+        .prose-content h4 { font-size: 1.5rem; line-height: 1.35; } /* text-2xl */
+        .prose-content h5 { font-size: 1.25rem; line-height: 1.4; } /* text-xl */
+        .prose-content h6 { font-size: 1.125rem; line-height: 1.5; } /* text-lg */
 
-        #back-to-top {
-            position: fixed;
-            bottom: 2rem;
-            right: 2rem;
-            background-color: #10b981;
-            color: white;
-            padding: 0.5rem 1rem;
-            border-radius: 9999px;
-            opacity: 0;
-            visibility: hidden;
-            transition: opacity 0.3s ease, visibility 0.3s ease;
-            cursor: pointer;
-            box-shadow: 0 4px 6px rgba(16, 185, 129, 0.5);
-            z-index: 50;
+        .prose-content p {
+            margin-top: 1em;
+            margin-bottom: 1em;
         }
-
-        button:hover {
-            filter: brightness(1.1);
-            transition: filter 0.2s ease;
+        .prose-content strong {
+            color: #FFFFFF; /* white */
         }
-
-        .prose-invert a {
-            color: #22d3ee;
+        .prose-content em {
+            color: #CBD5E1; /* slate-300 */
+        }
+        .prose-content a {
+            color: #22d3ee; /* cyan-400 */
             text-decoration: underline;
             transition: color 0.3s ease;
         }
-        .prose-invert a:hover {
-            color: #10b981;
+        .prose-content a:hover {
+            color: #10b981; /* emerald-500 */
+        }
+        .prose-content ul {
+            list-style-type: disc;
+            margin-left: 1.5em;
+            margin-top: 1em;
+            margin-bottom: 1em;
+            padding-left: 0.5em; /* Add some padding for bullets */
+        }
+        .prose-content ol {
+            list-style-type: decimal;
+            margin-left: 1.5em;
+            margin-top: 1em;
+            margin-bottom: 1em;
+            padding-left: 0.5em; /* Add some padding for numbers */
+        }
+        .prose-content li {
+            margin-bottom: 0.5em;
+        }
+        .prose-content blockquote {
+            border-left: 4px solid #10b981; /* emerald-500 */
+            padding-left: 1em;
+            color: #94A3B8; /* slate-400 */
+            font-style: italic;
+            margin-top: 1.5em;
+            margin-bottom: 1.5em;
+        }
+        .prose-content code {
+            background-color: rgba(30, 41, 59, 0.6); /* slate-800 with opacity */
+            color: #E2E8F0; /* slate-100 */
+            padding: 0.2em 0.4em;
+            border-radius: 0.25rem;
+            font-size: 0.9em;
+            font-family: monospace; /* Ensure monospace font for code */
+        }
+        .prose-content pre {
+            background-color: #0F172A; /* slate-900 */
+            color: #E2E8F0; /* slate-100 */
+            padding: 1em;
+            border-radius: 0.5rem;
+            overflow-x: auto;
+            margin-top: 1.5em;
+            margin-bottom: 1.5em;
+            font-family: monospace;
+        }
+        .prose-content table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 1.5em;
+            margin-bottom: 1.5em;
+        }
+        .prose-content th, .prose-content td {
+            border: 1px solid #475569; /* slate-600 */
+            padding: 0.75em;
+            text-align: left;
+        }
+        .prose-content th {
+            background-color: rgba(30, 41, 59, 0.8); /* darker for table headers */
+        }
+        .prose-content img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 0.5rem;
+            margin-top: 1.5em;
+            margin-bottom: 1.5em;
+            display: block; /* Ensure images are block elements for proper margins */
+            object-fit: cover; /* Changed from contain to cover for better filling */
         }
 
-        @media (max-width: 768px) {
-            #mobile-menu a {
-                padding-left: 0;
-                padding-right: 0;
-            }
+        /* Specific mobile menu transition */
+        #mobile-menu.hidden {
+            transform: scale-y(0);
+            opacity: 0;
+        }
+        #mobile-menu:not(.hidden) {
+            transform: scale-y(1);
+            opacity: 1;
         }
     </style>
 </head>
 
-<body class="bg-gray-900 text-gray-100 font-sans">
+<body class="bg-slate-900 text-slate-100 font-sans antialiased scroll-smooth overflow-x-hidden">
 
+<!-- HEADER -->
 <header class="fixed top-0 w-full z-50 glass-effect border-b border-slate-800/50">
     <div class="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
+        <!-- Logo -->
         <div class="text-2xl font-bold">
-            <a class="gradient-text hover:brightness-110 transition duration-300">Prasun.dev</a>
+            <a th:href="@{/}" class="gradient-text hover:brightness-110 transition duration-300">Prasun.dev</a>
         </div>
 
+        <!-- Desktop Nav -->
         <nav class="hidden md:flex space-x-8">
-            <a th:href="@{/}" class="nav-link text-slate-300 hover:text-white transition duration-300">Home</a>
-            <a th:href="@{/}" class="nav-link text-slate-300 hover:text-white transition duration-300">About</a>
-            <a th:href="@{/blogs}" class="nav-link text-slate-300 hover:text-white transition duration-300">Blogs</a>
-            <a th:href="@{/}" class="nav-link text-slate-300 hover:text-white transition duration-300">Projects</a>
-            <a th:href="@{/}" class="nav-link text-slate-300 hover:text-white transition duration-300">Contact</a>
+            <a th:href="@{/#home}" class="nav-link text-slate-300 hover:text-white transition duration-300">Home</a>
+            <a th:href="@{/#about}" class="nav-link text-slate-300 hover:text-white transition duration-300">About</a>
+            <a th:href="@{/blogs}" class="nav-link text-emerald-400 hover:text-white transition duration-300">Blogs</a>
+            <a th:href="@{/#projects}" class="nav-link text-slate-300 hover:text-white transition duration-300">Projects</a>
+            <a th:href="@{/#contact}" class="nav-link text-slate-300 hover:text-white transition duration-300">Contact</a>
             <a th:href="@{/admin}" class="nav-link text-slate-300 hover:text-white transition duration-300">Admin</a>
         </nav>
 
-        <button id="menu-toggle" class="md:hidden focus:outline-none">
-            <svg id="hamburger-icon" class="w-6 h-6 text-emerald-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <!-- Mobile Nav Toggle -->
+        <button id="menu-toggle" class="md:hidden focus:outline-none relative" aria-label="Toggle navigation menu" aria-expanded="false" aria-controls="mobile-menu">
+            <svg id="hamburger-icon" class="w-7 h-7 text-emerald-500 transition-all duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
             </svg>
         </button>
     </div>
 
-    <div id="mobile-menu" class="hidden md:hidden absolute top-full left-0 right-0 glass-effect py-4 px-6 rounded-b-lg shadow-xl">
+    <!-- Mobile Menu -->
+    <div id="mobile-menu" class="hidden md:hidden absolute top-full left-0 right-0 glass-effect py-4 px-6 rounded-b-lg shadow-xl origin-top">
         <div class="flex flex-col space-y-4">
-            <a th:href="@{/}" class="text-slate-300 hover:text-white transition duration-300 py-2 border-b border-slate-800/50">Home</a>
-            <a th:href="@{/}" class="text-slate-300 hover:text-white transition duration-300 py-2 border-b border-slate-800/50">About</a>
-            <a th:href="@{/blogs}" class="nav-link text-slate-300 hover:text-white transition duration-300">Blogs</a>
-            <a th:href="@{/}" class="text-slate-300 hover:text-white transition duration-300 py-2 border-b border-slate-800/50">Projects</a>
-            <a th:href="@{/}" class="text-slate-300 hover:text-white transition duration-300 py-2">Contact</a>
+            <a th:href="@{/#home}" class="text-slate-300 hover:text-white transition duration-300 py-2 border-b border-slate-800/50">Home</a>
+            <a th:href="@{/#about}" class="text-slate-300 hover:text-white transition duration-300 py-2 border-b border-slate-800/50">About</a>
+            <a th:href="@{/blogs}" class="text-emerald-400 hover:text-white transition duration-300 py-2 border-b border-slate-800/50">Blogs</a>
+            <a th:href="@{/#projects}" class="text-slate-300 hover:text-white transition duration-300 py-2 border-b border-slate-800/50">Projects</a>
+            <a th:href="@{/#contact}" class="text-slate-300 hover:text-white transition duration-300 py-2">Contact</a>
             <a th:href="@{/admin}" class="text-slate-300 hover:text-white transition duration-300 py-2">Admin</a>
         </div>
     </div>
 </header>
 
 <!-- Blog Post Container -->
-<div class="max-w-4xl mx-auto p-6 md:p-10 mt-32 bg-gray-800 rounded-xl shadow-lg">
+<div class="max-w-4xl mx-auto p-6 md:p-10 mt-32 bg-slate-800 rounded-xl shadow-lg animate-fadeIn">
     <!-- Blog Image -->
     <div class="mb-6">
-        <img th:src="${post.imageURL}" alt="Post Image" class="w-full h-auto object-contain rounded-lg shadow-md mx-auto" />
-
+        <img th:src="${post.imageURL}" alt="Post Image"
+             class="w-full h-auto object-cover rounded-lg shadow-md mx-auto max-h-[500px]" />
     </div>
 
     <!-- Title -->
-    <h1 class="text-4xl font-bold text-white mb-4" th:text="${post.title}">Post Title</h1>
+    <h1 class="text-4xl lg:text-5xl font-extrabold text-white mb-4 leading-tight" th:text="${post.title}">Post Title</h1>
 
-    <!-- Author Info -->
-    <div class="text-sm text-gray-400 mb-2">
-        <span>By </span><span class="font-medium text-gray-300" th:text="${post.author}">Author Name</span>
+    <!-- Author Info & Date -->
+    <div class="text-sm text-slate-400 mb-6 flex items-center space-x-2">
+        <span>By </span><span class="font-medium text-slate-300" th:text="${post.author} ?: 'Prasun'">Prasun</span>
     </div>
 
     <!-- Description -->
-    <p class="italic text-gray-300 mb-6" th:text="${post.description}">
-        Blog short description goes here...
+    <p class="italic text-slate-300 mb-8 text-lg" th:text="${post.description}">
+        Blog short description goes here... This is an insightful article about various tech topics and personal development.
     </p>
 
     <!-- Blog Content -->
-    <div class="prose prose-invert prose-lg max-w-none text-gray-100 mb-8" th:utext="${post.content}">
-        Blog content here...
+    <!-- Applying custom prose-like styling for consistent formatting -->
+    <div class="prose-content max-w-none text-slate-100 mb-8" th:utext="${post.content}">
+        <!-- Content will be injected here by Thymeleaf from post.content -->
     </div>
 
     <!-- Share Buttons -->
     <div class="mt-6 flex flex-wrap gap-4">
-        <button onclick="shareOnFacebook()" class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition duration-200">
+        <button onclick="shareOnFacebook()" class="px-6 py-3 bg-blue-600 hover:bg-blue-700 text-white font-bold rounded-lg transition duration-300 transform hover:scale-105 shadow-lg flex items-center">
+            <svg class="w-5 h-5 mr-2" fill="currentColor" viewBox="0 0 24 24"><path d="M9 8h-3v4h3v12h5v-12h3.642l.358-4h-4v-1.667c0-.955.192-1.333 1.115-1.333h2.885v-5h-3.812c-3.277 0-5.188 1.566-5.188 4.686v2.314z"/></svg>
             Share on Facebook
         </button>
-        <button onclick="shareOnWhatsApp()" class="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600 transition duration-200">
+        <button onclick="shareOnWhatsApp()" class="px-6 py-3 bg-green-500 hover:bg-green-600 text-white font-bold rounded-lg transition duration-300 transform hover:scale-105 shadow-lg flex items-center">
+            <svg class="w-5 h-5 mr-2" fill="currentColor" viewBox="0 0 24 24"><path d="M.057 24l1.687-6.163c-1.041-1.804-1.557-3.844-1.557-5.883 0-6.504 5.257-11.761 11.76-11.761 3.297 0 6.31 1.328 8.596 3.593 2.285 2.266 3.585 5.234 3.585 8.525s-1.3 6.258-3.585 8.525c-2.286 2.265-5.299 3.593-8.596 3.593-1.614 0-3.195-.407-4.577-1.191l-6.242 1.637zm6.59-4.839l-.49-.297c-1.127-.684-2.122-1.785-2.836-3.084l-.193-.33c-.562-1.054-.874-2.247-.874-3.488 0-4.606 3.73-8.337 8.336-8.337 2.202 0 4.254.872 5.795 2.416s2.414 3.593 2.414 5.795c0 4.606-3.73 8.337-8.336 8.337-1.102 0-2.158-.236-3.109-.691l-.25-.118-2.614.685zm.526-2.529l-.273-.167c-.895-.544-1.688-1.423-2.253-2.464l-.153-.263c-.446-.83-.695-1.767-.695-2.756 0-3.61 2.946-6.556 6.555-6.556 1.737 0 3.364.682 4.588 1.905s1.905 2.852 1.905 4.588c0 3.61-2.946 6.556-6.555 6.556-1.737 0-3.364-.682-4.588-1.905l-2.614.685zm-.017-3.957l-.273-.167z"/></svg>
             Share on WhatsApp
         </button>
-        <button onclick="copyLink()" class="bg-gray-700 text-white px-4 py-2 rounded hover:bg-gray-600 transition duration-200">
+        <button id="copy-link-btn" class="px-6 py-3 bg-slate-700 hover:bg-slate-600 text-white font-bold rounded-lg transition duration-300 transform hover:scale-105 shadow-lg flex items-center">
+            <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 5H6a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2v-2M8 5a2 2 0 002 2h2a2 2 0 002-2M8 5a2 2 0 012-2h2a2 2 0 012 2m0 0h2a2 2 0 002-2V7a2 2 0 00-2-2h-2m-4 2H9m2 0H9" /></svg>
             Copy Link
         </button>
     </div>
 </div>
 
 <!-- Back to Blogs Button -->
-<div class="text-center mt-10">
-    <a th:href="@{/blogs}" class="inline-block bg-blue-500 hover:bg-blue-600 text-white font-semibold py-2 px-6 rounded-md shadow-md">
+<div class="text-center mt-10 mb-16">
+    <a th:href="@{/blogs}" class="inline-block bg-gradient-to-r from-emerald-500 to-blue-500 hover:from-emerald-600 hover:to-blue-600 text-white font-semibold py-3 px-8 rounded-full shadow-lg transition duration-300 transform hover:scale-105">
         ← Back to Blogs
     </a>
 </div>
 
 <!-- Footer -->
-<footer class="py-12 bg-slate-900 border-t border-slate-800/50 mt-10">
+<footer class="py-12 bg-slate-900 border-t border-slate-800/50">
     <div class="max-w-4xl mx-auto px-6">
         <div class="flex flex-col md:flex-row justify-between items-center">
             <div class="mb-6 md:mb-0">
@@ -187,11 +317,11 @@
             </div>
 
             <div class="flex flex-wrap gap-6 justify-center">
-                <a th:href="@{/}" class="text-slate-400 hover:text-white transition duration-300">Home</a>
-                <a th:href="@{/}" class="text-slate-400 hover:text-white transition duration-300">About</a>
+                <a th:href="@{/#home}" class="text-slate-400 hover:text-white transition duration-300">Home</a>
+                <a th:href="@{/#about}" class="text-slate-400 hover:text-white transition duration-300">About</a>
                 <a th:href="@{/blogs}" class="text-slate-400 hover:text-white transition duration-300">Blogs</a>
-                <a th:href="@{/}" class="text-slate-400 hover:text-white transition duration-300">Projects</a>
-                <a th:href="@{/}" class="text-slate-400 hover:text-white transition duration-300">Contact</a>
+                <a th:href="@{/#projects}" class="text-slate-400 hover:text-white transition duration-300">Projects</a>
+                <a th:href="@{/#contact}" class="text-slate-400 hover:text-white transition duration-300">Contact</a>
             </div>
         </div>
 
@@ -201,12 +331,21 @@
     </div>
 </footer>
 
+<!-- Back to Top Button -->
+<button id="back-to-top" class="fixed bottom-8 right-8 w-12 h-12 bg-gradient-to-br from-emerald-500 to-blue-500 hover:from-emerald-600 hover:to-blue-600 rounded-full flex items-center justify-center shadow-lg transition duration-300 transform hover:scale-110 opacity-0 invisible z-50 back-to-top-button">
+    <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 10l7-7m0 0l7 7m-7-7v18" />
+    </svg>
+</button>
+
 <!-- Scripts -->
 <script>
+    // Helper function for current URL
     function getCurrentUrl() {
         return window.location.href;
     }
 
+    // Share functions
     function shareOnFacebook() {
         const url = encodeURIComponent(getCurrentUrl());
         const fbShareUrl = `https://www.facebook.com/sharer/sharer.php?u=${url}`;
@@ -219,31 +358,48 @@
         window.open(waShareUrl, '_blank');
     }
 
-    function copyLink() {
+    document.getElementById('copy-link-btn').addEventListener('click', () => {
         const url = getCurrentUrl();
-        navigator.clipboard.writeText(url)
-            .then(() => alert('Link copied! Paste it anywhere.'))
-            .catch(() => alert('Failed to copy link.'));
-    }
+        // Using document.execCommand for better compatibility in iframe environments
+        const tempInput = document.createElement('textarea');
+        tempInput.value = url;
+        document.body.appendChild(tempInput);
+        tempInput.select();
+        try {
+            document.execCommand('copy');
+            console.log('Link copied to clipboard!'); // Console log instead of alert or confirm
+        } catch (err) {
+            console.error('Failed to copy link:', err);
+        }
+        document.body.removeChild(tempInput);
+    });
 
+    // Mobile menu toggle
     const menuToggle = document.getElementById('menu-toggle');
     const mobileMenu = document.getElementById('mobile-menu');
     const hamburgerIcon = document.getElementById('hamburger-icon');
 
     menuToggle.addEventListener('click', () => {
-        mobileMenu.classList.toggle('hidden');
+        const isHidden = mobileMenu.classList.toggle('hidden');
+        menuToggle.setAttribute('aria-expanded', !isHidden); // Set aria-expanded
+        // Toggle opacity and scale for smooth animation
+        mobileMenu.classList.toggle('opacity-0');
+        mobileMenu.classList.toggle('scale-y-0');
         hamburgerIcon.classList.toggle('text-emerald-500');
         hamburgerIcon.classList.toggle('text-white');
     });
 
+    // Close mobile menu when clicking on a link
     document.querySelectorAll('#mobile-menu a').forEach(link => {
         link.addEventListener('click', () => {
-            mobileMenu.classList.add('hidden');
+            mobileMenu.classList.add('hidden', 'opacity-0', 'scale-y-0');
+            menuToggle.setAttribute('aria-expanded', 'false'); // Reset aria-expanded
             hamburgerIcon.classList.remove('text-white');
             hamburgerIcon.classList.add('text-emerald-500');
         });
     });
 
+    // Back to top button visibility
     const backToTopButton = document.getElementById('back-to-top');
 
     window.addEventListener('scroll', () => {
@@ -256,58 +412,117 @@
         }
     });
 
-    backToTopButton?.addEventListener('click', () => {
+    // Back to top button click handler
+    backToTopButton.addEventListener('click', () => {
         window.scrollTo({
             top: 0,
             behavior: 'smooth'
         });
     });
 
+    // Set current year in footer
     document.getElementById('year').textContent = new Date().getFullYear();
 
+    // Smooth scrolling for anchor links (adjusted for main page sections)
+    // Links starting with /# (e.g., /#home) will navigate to the root and then scroll
+    document.querySelectorAll('a[th\\:href^="/#"]').forEach(anchor => {
+        anchor.addEventListener('click', function (e) {
+            e.preventDefault();
+            const targetFragment = this.getAttribute('href'); // e.g., "/#home"
+            window.location.href = `/${targetFragment}`; // Navigate to the root with the fragment
+        });
+    });
+
+    // Smooth scrolling for internal links on the blog page itself (e.g., if you add an internal section)
     document.querySelectorAll('a[href^="#"]').forEach(anchor => {
         anchor.addEventListener('click', function (e) {
             e.preventDefault();
             const targetId = this.getAttribute('href');
             const targetElement = document.querySelector(targetId);
+            const headerOffset = 80; // Height of fixed header
             if (targetElement) {
+                const elementPosition = targetElement.getBoundingClientRect().top;
+                const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
                 window.scrollTo({
-                    top: targetElement.offsetTop - 80,
+                    top: offsetPosition,
                     behavior: 'smooth'
                 });
             }
         });
     });
 
-    const observerOptions = {
-        threshold: 0.1
-    };
-
-    const observer = new IntersectionObserver((entries) => {
-        entries.forEach(entry => {
-            if (entry.isIntersecting) {
-                if (entry.target.id === 'skills') {
-                    animateSkillBars();
-                }
-                entry.target.classList.add('animate-fadeIn');
+    // Placeholder image fallback for img elements
+    document.querySelectorAll('img').forEach(img => {
+        img.onerror = function() {
+            // Check if it's already the placeholder to avoid infinite loop
+            if (!this.src.includes('placehold.co')) {
+                const width = this.naturalWidth > 0 ? this.naturalWidth : 900;
+                const height = this.naturalHeight > 0 ? this.naturalHeight : 720;
+                this.src = `https://placehold.co/${width}x${height}/0f172a/10b981?text=Image+Error`;
             }
-        });
-    }, observerOptions);
-
-    document.querySelectorAll('section').forEach(section => {
-        observer.observe(section);
+        };
     });
 
-    function animateSkillBars() {
-        const skillBars = document.querySelectorAll('.skill-bar');
-        skillBars.forEach(bar => {
-            const width = bar.style.width;
-            bar.style.width = '0';
-            setTimeout(() => {
-                bar.style.width = width;
-            }, 100);
-        });
+    // Function to dynamically add paragraph breaks to raw text content
+    function applyDynamicParagraphBreaks() {
+        const contentDiv = document.querySelector('.prose-content');
+        if (!contentDiv) {
+            console.warn("Prose content div not found.");
+            return;
+        }
+
+        // Get the raw text content, preserving potential line breaks from input
+        let rawText = contentDiv.textContent.trim();
+
+        // Check if the content already contains common HTML block tags
+        // This is a heuristic to prevent double-processing or breaking already formatted content
+        const containsHtmlBlocks = /(<p>|<h[1-6]>|<ul|<ol|<blockquote|<pre>)/i.test(contentDiv.innerHTML);
+
+        if (rawText.length > 0 && !containsHtmlBlocks) {
+            // Simple splitting by double newlines for paragraph breaks
+            let paragraphs = rawText.split(/\n\s*\n/);
+
+            // Fallback for single newlines if double newlines don't produce enough paragraphs
+            if (paragraphs.length === 1 && rawText.includes('\n')) {
+                paragraphs = rawText.split(/\n/);
+            }
+
+            // Filter out empty paragraphs and wrap in <p> tags
+            let formattedContent = paragraphs.map(p => {
+                p = p.trim();
+                return p.length > 0 ? `<p>${p}</p>` : '';
+            }).join('');
+
+            // Apply a general character-based split if still one very long paragraph
+            // This is the most aggressive and potentially problematic step.
+            if (paragraphs.length === 1 && rawText.length > 500) { // If it's still one huge block over 500 chars
+                let charLimit = 300; // Characters per 'paragraph'
+                let tempContent = rawText;
+                let tempParagraphs = [];
+                while (tempContent.length > 0) {
+                    let segment = tempContent.substring(0, charLimit);
+                    let lastSpace = segment.lastIndexOf(' ');
+                    if (lastSpace !== -1 && segment.length === charLimit) {
+                        segment = segment.substring(0, lastSpace);
+                    }
+                    tempParagraphs.push(`<p>${segment.trim()}</p>`);
+                    tempContent = tempContent.substring(segment.length).trim();
+                }
+                formattedContent = tempParagraphs.join('');
+            }
+
+            // Only update if we actually formatted something
+            if (formattedContent.length > 0) {
+                contentDiv.innerHTML = formattedContent;
+                console.log("Dynamically added paragraph breaks to post content.");
+            }
+        } else if (rawText.length === 0) {
+            contentDiv.innerHTML = "<p class='text-slate-400 italic'>No content available for this post.</p>";
+        }
     }
+
+    // Call this function when the DOM is fully loaded
+    document.addEventListener('DOMContentLoaded', applyDynamicParagraphBreaks);
 </script>
 
 </body>
