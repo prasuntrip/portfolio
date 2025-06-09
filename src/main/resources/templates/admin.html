@@ -2,78 +2,140 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
   <meta charset="UTF-8">
-  <title>Admin Login</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Login | Prasun.dev</title>
+
+  <!-- Google Fonts - Inter -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="icon" href="/images/logo.png" type="image/png" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+
   <script src="https://cdn.tailwindcss.com"></script>
   <style>
-    .glass-effect {
-      backdrop-filter: blur(12px);
-      background: rgba(30, 30, 30, 0.5);
+    /* Base styles for Inter font */
+    body {
+      font-family: 'Inter', sans-serif;
+    }
+
+    /* Keyframe Animations */
+    @keyframes fadeIn {
+      0% { opacity: 0; transform: translateY(20px); }
+      100% { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes gradientFlow {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+
+    /* Custom Animation Classes */
+    .animate-fadeIn {
+      animation: fadeIn 1s ease forwards;
     }
     .gradient-text {
-      background: linear-gradient(to right, #0f0, #0ff, #08f);
+      background-clip: text;
       -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
+      color: transparent;
+      background-image: linear-gradient(90deg, #10b981, #3b82f6); /* Emerald to Blue */
+      background-size: 200% 200%;
+      animation: gradientFlow 8s ease infinite;
+    }
+    .glass-effect {
+      background: rgba(15, 23, 42, 0.7); /* Slate-900 with opacity */
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+    .nav-link {
+      position: relative;
+    }
+    .nav-link::after {
+      content: '';
+      position: absolute;
+      width: 0;
+      height: 2px;
+      bottom: -2px;
+      left: 0;
+      background: linear-gradient(90deg, #10b981, #3b82f6); /* Emerald to Blue */
+      transition: width 0.4s cubic-bezier(0.65, 0, 0.35, 1);
+    }
+    .nav-link:hover::after {
+      width: 100%;
+    }
+    /* Specific mobile menu transition */
+    #mobile-menu.hidden {
+      transform: scale-y(0);
+      opacity: 0;
+    }
+    #mobile-menu:not(.hidden) {
+      transform: scale-y(1);
+      opacity: 1;
     }
   </style>
 </head>
-<body class="bg-gradient-to-br from-gray-950 via-gray-900 to-gray-800 min-h-screen flex flex-col items-center justify-center text-gray-100">
+<body class="bg-gradient-to-br from-slate-950 via-slate-900 to-slate-800 min-h-screen flex flex-col items-center justify-center text-slate-100 antialiased scroll-smooth overflow-x-hidden">
 
 <!-- Header -->
-<header class="fixed top-0 w-full z-50 glass-effect border-b border-slate-700/50">
+<header class="fixed top-0 w-full z-50 glass-effect border-b border-slate-800/50">
   <div class="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
     <!-- Logo -->
     <div class="text-2xl font-bold">
-      <a class="gradient-text hover:brightness-125 transition duration-300">Prasun.dev</a>
+      <a th:href="@{/}" class="gradient-text hover:brightness-110 transition duration-300">Prasun.dev</a>
     </div>
 
     <!-- Desktop Nav -->
-    <nav class="hidden md:flex space-x-6">
-      <a th:href="@{/}" class="nav-link text-gray-300 hover:text-white transition duration-200">Home</a>
-      <a th:href="@{/}" class="nav-link text-gray-300 hover:text-white transition duration-200">About</a>
-      <a th:href="@{/}" class="nav-link text-gray-300 hover:text-white transition duration-200">Skills</a>
-      <a th:href="@{/}" class="nav-link text-gray-300 hover:text-white transition duration-200">Projects</a>
-      <a th:href="@{/}" class="nav-link text-gray-300 hover:text-white transition duration-200">Contact</a>
-      <a th:href="@{/admin}" class="nav-link text-emerald-400 hover:text-emerald-300 transition duration-200">Admin</a>
+    <nav class="hidden md:flex space-x-8">
+      <a th:href="@{/#home}" class="nav-link text-slate-300 hover:text-white transition duration-300">Home</a>
+      <a th:href="@{/#about}" class="nav-link text-slate-300 hover:text-white transition duration-300">About</a>
+      <a th:href="@{/blogs}" class="nav-link text-slate-300 hover:text-white transition duration-300">Blogs</a>
+      <a th:href="@{/#projects}" class="nav-link text-slate-300 hover:text-white transition duration-300">Projects</a>
+      <a th:href="@{/#contact}" class="nav-link text-slate-300 hover:text-white transition duration-300">Contact</a>
+      <a th:href="@{/admin}" class="nav-link text-emerald-400 hover:text-white transition duration-300">Admin</a>
     </nav>
 
     <!-- Mobile Button -->
-    <button id="menu-toggle" class="md:hidden focus:outline-none">
-      <svg id="hamburger-icon" class="w-6 h-6 text-emerald-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-              d="M4 6h16M4 12h16M4 18h16"/>
+    <button id="menu-toggle" class="md:hidden focus:outline-none relative" aria-label="Toggle navigation menu" aria-expanded="false" aria-controls="mobile-menu">
+      <svg id="hamburger-icon" class="w-7 h-7 text-emerald-500 transition-all duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
       </svg>
     </button>
   </div>
 
   <!-- Mobile Menu -->
-  <div id="mobile-menu" class="hidden md:hidden absolute top-full left-0 right-0 glass-effect py-4 px-6 rounded-b-lg shadow-xl">
-    <div class="flex flex-col space-y-3">
-      <a th:href="@{/}" class="text-gray-300 hover:text-white transition duration-200">Home</a>
-      <a th:href="@{/}" class="text-gray-300 hover:text-white transition duration-200">About</a>
-      <a th:href="@{/}" class="text-gray-300 hover:text-white transition duration-200">Skills</a>
-      <a th:href="@{/}" class="text-gray-300 hover:text-white transition duration-200">Projects</a>
-      <a th:href="@{/}" class="text-gray-300 hover:text-white transition duration-200">Contact</a>
-      <a th:href="@{/admin}" class="text-emerald-400 hover:text-emerald-300 transition duration-200">Admin</a>
+  <div id="mobile-menu" class="hidden md:hidden absolute top-full left-0 right-0 glass-effect py-4 px-6 rounded-b-lg shadow-xl origin-top transition-all duration-300 ease-in-out scale-y-0 opacity-0">
+    <div class="flex flex-col space-y-4">
+      <a th:href="@{/#home}" class="text-slate-300 hover:text-white transition duration-300 py-2 border-b border-slate-800/50">Home</a>
+      <a th:href="@{/#about}" class="text-slate-300 hover:text-white transition duration-300 py-2 border-b border-slate-800/50">About</a>
+      <a th:href="@{/blogs}" class="text-slate-300 hover:text-white transition duration-300 py-2 border-b border-slate-800/50">Blogs</a>
+      <a th:href="@{/#projects}" class="text-slate-300 hover:text-white transition duration-300 py-2 border-b border-slate-800/50">Projects</a>
+      <a th:href="@{/#contact}" class="text-slate-300 hover:text-white transition duration-300 py-2">Contact</a>
+      <a th:href="@{/admin}" class="text-emerald-400 hover:text-white transition duration-300 py-2">Admin</a>
     </div>
   </div>
 </header>
 
 <!-- Admin Login Box -->
-<main class="mt-32 w-full max-w-sm glass-effect p-8 rounded-2xl shadow-2xl border border-slate-700 backdrop-blur-md">
-  <h2 class="text-3xl font-extrabold text-center mb-6 text-white tracking-tight">Admin Access</h2>
+<main class="mt-32 w-full max-w-sm glass-effect p-8 rounded-2xl shadow-2xl border border-slate-700 animate-fadeIn">
+  <h2 class="text-3xl font-extrabold text-center mb-8 text-white tracking-tight">Admin Access</h2>
   <form action="/admin-login" method="POST" class="space-y-6">
+    <div th:if="${param.error}" class="bg-red-500/20 text-red-400 p-4 rounded-lg mb-6 flex items-center animate-fadeIn">
+      <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+      <span>Invalid Admin ID or password.</span>
+    </div>
+
     <div>
-      <label for="adminId" class="block mb-2 text-sm font-medium text-gray-300">Admin ID</label>
+      <label for="adminId" class="block mb-2 text-sm font-medium text-slate-300">Admin ID</label>
       <input type="text" id="adminId" name="adminId" required
-             class="w-full px-4 py-2 bg-gray-900/80 border border-gray-700 rounded-md text-gray-100 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 transition duration-200">
+             class="w-full px-4 py-3 bg-slate-800/80 border border-slate-700 rounded-lg text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 transition duration-300">
     </div>
     <div>
-      <label for="password" class="block mb-2 text-sm font-medium text-gray-300">Password</label>
+      <label for="password" class="block mb-2 text-sm font-medium text-slate-300">Password</label>
       <input type="password" id="password" name="password" required
-             class="w-full px-4 py-2 bg-gray-900/80 border border-gray-700 rounded-md text-gray-100 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 transition duration-200">
+             class="w-full px-4 py-3 bg-slate-800/80 border border-slate-700 rounded-lg text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 transition duration-300">
     </div>
     <button type="submit"
-            class="w-full py-2.5 bg-emerald-600 hover:bg-emerald-700 text-white font-semibold rounded-md shadow-md transition-all duration-200 hover:shadow-lg focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-emerald-500">
+            class="w-full py-3 bg-gradient-to-r from-emerald-500 to-blue-500 hover:from-emerald-600 hover:to-blue-600 text-white font-bold rounded-lg shadow-lg transition duration-300 transform hover:scale-[1.02] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-emerald-500">
       Log In
     </button>
   </form>
@@ -86,7 +148,11 @@
   const hamburgerIcon = document.getElementById('hamburger-icon');
 
   menuToggle.addEventListener('click', () => {
-    mobileMenu.classList.toggle('hidden');
+    const isHidden = mobileMenu.classList.toggle('hidden');
+    menuToggle.setAttribute('aria-expanded', !isHidden); // Set aria-expanded
+    // Toggle opacity and scale for smooth animation
+    mobileMenu.classList.toggle('opacity-0');
+    mobileMenu.classList.toggle('scale-y-0');
     hamburgerIcon.classList.toggle('text-emerald-500');
     hamburgerIcon.classList.toggle('text-white');
   });
@@ -94,84 +160,27 @@
   // Close mobile menu when clicking on a link
   document.querySelectorAll('#mobile-menu a').forEach(link => {
     link.addEventListener('click', () => {
-      mobileMenu.classList.add('hidden');
+      mobileMenu.classList.add('hidden', 'opacity-0', 'scale-y-0');
+      menuToggle.setAttribute('aria-expanded', 'false'); // Reset aria-expanded
       hamburgerIcon.classList.remove('text-white');
       hamburgerIcon.classList.add('text-emerald-500');
     });
   });
 
-  // Back to top button
-  const backToTopButton = document.getElementById('back-to-top');
+  // This page typically doesn't need a back-to-top button or skill bars.
+  // Their associated JavaScript has been removed to keep the script lean.
 
-  window.addEventListener('scroll', () => {
-    if (window.pageYOffset > 300) {
-      backToTopButton.classList.remove('opacity-0', 'invisible');
-      backToTopButton.classList.add('opacity-100', 'visible');
-    } else {
-      backToTopButton.classList.remove('opacity-100', 'visible');
-      backToTopButton.classList.add('opacity-0', 'invisible');
-    }
-  });
-
-  backToTopButton.addEventListener('click', () => {
-    window.scrollTo({
-      top: 0,
-      behavior: 'smooth'
-    });
-  });
-
-  // Animate skill bars on scroll
-  const skillBars = document.querySelectorAll('.skill-bar');
-
-  const animateSkillBars = () => {
-    skillBars.forEach(bar => {
-      const width = bar.style.width;
-      bar.style.width = '0';
-      setTimeout(() => {
-        bar.style.width = width;
-      }, 100);
-    });
-  };
-
-  // Set current year in footer
-  document.getElementById('year').textContent = new Date().getFullYear();
-
-  // Smooth scrolling for anchor links
-  document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+  // Smooth scrolling for anchor links for main page navigation (adapted for this page)
+  document.querySelectorAll('a[th\\:href^="/#"]').forEach(anchor => {
     anchor.addEventListener('click', function (e) {
       e.preventDefault();
-
-      const targetId = this.getAttribute('href');
-      const targetElement = document.querySelector(targetId);
-
-      if (targetElement) {
-        window.scrollTo({
-          top: targetElement.offsetTop - 80,
-          behavior: 'smooth'
-        });
-      }
+      const targetFragment = this.getAttribute('href'); // e.g., "/#home"
+      window.location.href = `/${targetFragment}`; // Navigate to the root with the fragment
     });
   });
 
-  // Intersection Observer for animations
-  const observerOptions = {
-    threshold: 0.1
-  };
-
-  const observer = new IntersectionObserver((entries) => {
-    entries.forEach(entry => {
-      if (entry.isIntersecting) {
-        if (entry.target.id === 'skills') {
-          animateSkillBars();
-        }
-        entry.target.classList.add('animate-fadeIn');
-      }
-    });
-  }, observerOptions);
-
-  document.querySelectorAll('section').forEach(section => {
-    observer.observe(section);
-  });
+  // This page does not contain sections for a direct Intersection Observer on elements.
+  // The general "animate-fadeIn" class is applied directly to the <main> element in HTML.
 </script>
 
 </body>

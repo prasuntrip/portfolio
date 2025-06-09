@@ -46,4 +46,9 @@ public class Controller {
         return "BlogReading";
     }
 
+    @GetMapping("/about")
+    public String about(Model model) {
+        return "about";
+    }
+
 }
